@@ -6,6 +6,7 @@ import processing.core.PApplet
  *
  * @author Tomas Perez Molina
  */
+/*
 class KSketch: PApplet() {
     private val balls: MutableList<KBall> = ArrayList()
 
@@ -37,4 +38,4 @@ object Main {
         val sketch = KSketch()
         PApplet.runSketch(processingArgs, sketch)
     }
-}
+}*/

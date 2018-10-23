@@ -13,7 +13,8 @@ public class MySketch extends PApplet {
     private List<Ball> balls = new ArrayList<>();
 
     public void settings(){
-        size(800, 600);
+        fullScreen();
+        //size(800, 600);
         balls.add(new Ball(this, width/2, height/2));
     }
 
