@@ -8,7 +8,6 @@ import edu.austral.starship.base.collision.Collisionable
  */
 interface GameEntity: Collisionable<GameEntity> {
     fun <R> accept(entityVisitor: EntityVisitor<R>): R
-    fun setBounds(width: Int, height: Int)
     fun update()
     fun isDestroyed(): Boolean
     fun hit(damage: Int)

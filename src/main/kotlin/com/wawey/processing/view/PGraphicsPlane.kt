@@ -9,6 +9,11 @@ import processing.core.PGraphics
  */
 class PGraphicsPlane(private val graphics: PGraphics): Plane {
 
+    override val width: Int
+        get() = graphics.width
+    override val height: Int
+        get() = graphics.height
+
     override fun ellipse(radiusA: Int, radiusB: Int, position: Vector2D, angle: Float) {
         withRototraslation(position, angle) {
             graphics.ellipse(
@@ -32,6 +37,7 @@ class PGraphicsPlane(private val graphics: PGraphics): Plane {
     }
 
     override fun rectangle(width: Int, height: Int, position: Vector2D, angle: Float) {
+        graphics.rectMode(PGraphics.CENTER)
         withRototraslation(position, angle) {
             graphics.rect(
                     0f,
@@ -47,10 +53,6 @@ class PGraphicsPlane(private val graphics: PGraphics): Plane {
         graphics.strokeWeight(drawColors.borderWidth.toFloat())
         graphics.stroke(drawColors.border.rgb)
     }
-
-    override fun getWidth(): Int = graphics.width
-
-    override fun getHeight(): Int = graphics.height
 
     private fun withRototraslation(position: Vector2D, angle: Float, function: () -> Unit) {
         graphics.pushMatrix()

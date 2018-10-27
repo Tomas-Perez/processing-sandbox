@@ -15,6 +15,6 @@ interface Plane {
     fun setDrawColors(drawColors: DrawColors)
 
     //New
-    fun getWidth(): Int
-    fun getHeight(): Int
+    val width: Int
+    val height: Int
 }

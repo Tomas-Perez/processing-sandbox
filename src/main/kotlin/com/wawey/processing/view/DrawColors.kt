@@ -8,4 +8,4 @@ import java.awt.Color
  */
 
 //Added borderWidth, change to Colors
-data class DrawColors(val fill: Color, val border: Color, val borderWidth: Int)
+data class DrawColors(val fill: Color = Color.WHITE, val border: Color = Color.BLACK, val borderWidth: Int = 1)
