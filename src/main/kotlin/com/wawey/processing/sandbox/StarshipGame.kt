@@ -1,5 +1,6 @@
 package com.wawey.processing.sandbox
 
+import com.wawey.processing.view.PGraphicsPlane
 import edu.austral.starship.base.framework.GameFramework
 import edu.austral.starship.base.framework.ImageLoader
 import edu.austral.starship.base.framework.WindowSettings
@@ -11,26 +12,33 @@ import processing.event.KeyEvent
  * @author Tomas Perez Molina
  */
 
-class Test: GameFramework{
+class StarshipGame: GameFramework{
     private val balls: MutableList<KBall> = ArrayList()
 
     override fun setup(windowsSettings: WindowSettings, imageLoader: ImageLoader) {
-        val i = 800f
-        windowsSettings.setSize(i.toInt(), i.toInt())
-        balls.add(KBall(i / 2, i / 2))
-        balls.add(KBall(i / 2, i / 2))
-        balls.add(KBall(i / 2, i / 2))
+        val i = 800
+        windowsSettings.setSize(i, i)
+        balls.add(KBall(i / 2, i / 2, i, i))
+        balls.add(KBall(i / 2, i / 2, i, i))
+        balls.add(KBall(i / 2, i / 2, i, i))
     }
 
     override fun draw(graphics: PGraphics, timeSinceLastDraw: Float, keySet: MutableSet<Int>) {
+        val plane = PGraphicsPlane(graphics)
+
         if(balls.size < 20) {
-            balls.add(KBall((graphics.width / 2).toFloat(), (graphics.height / 2).toFloat()))
+            balls.add(KBall(
+                    (plane.getWidth() / 2),
+                    (plane.getHeight() / 2),
+                    plane.getWidth(),
+                    plane.getHeight()
+            ))
         }
+
         graphics.background(64)
-        balls.forEach { b ->
-            b.step(graphics)
-            b.render(graphics)
-        }
+
+        balls.forEach { it.step() }
+        balls.forEach { it.render(plane) }
     }
 
     override fun keyPressed(event: KeyEvent?) {
