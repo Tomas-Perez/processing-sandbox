@@ -1,5 +1,6 @@
 package com.wawey.processing.sandbox
 
+import com.wawey.processing.model.vector2D.Vector2Adapter
 import com.wawey.processing.view.DrawColors
 import com.wawey.processing.view.Plane
 import edu.austral.starship.base.vector.Vector2
@@ -35,7 +36,7 @@ class KBall(private var x: Int,
 
     fun render(graphics: Plane) {
         graphics.setDrawColors(DrawColors(Color.BLUE, Color.GRAY, 5))
-        graphics.ellipse(size, size, Vector2.vector(x.toFloat(), y.toFloat()), 0f)
+        graphics.ellipse(size, size, Vector2Adapter.vector(x.toFloat(), y.toFloat()), 0f)
     }
 
 }

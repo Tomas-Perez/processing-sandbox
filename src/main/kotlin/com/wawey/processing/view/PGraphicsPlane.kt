@@ -1,8 +1,7 @@
 package com.wawey.processing.view
 
-import edu.austral.starship.base.vector.Vector2
+import com.wawey.processing.model.vector2D.Vector2D
 import processing.core.PGraphics
-import java.awt.Color
 
 /**
  *
@@ -10,26 +9,37 @@ import java.awt.Color
  */
 class PGraphicsPlane(private val graphics: PGraphics): Plane {
 
-    override fun ellipse(radiusA: Int, radiusB: Int, position: Vector2, angle: Float) {
-        withRotation({
+    override fun ellipse(radiusA: Int, radiusB: Int, position: Vector2D, angle: Float) {
+        withRototraslation(position, angle) {
             graphics.ellipse(
-                position.x,
-                position.y,
-                radiusA.toFloat(),
-                radiusB.toFloat()
+                    0f,
+                    0f,
+                    radiusA.toFloat(),
+                    radiusB.toFloat()
             )
-        }, angle)
+        }
     }
 
-    override fun rectangle(width: Int, height: Int, position: Vector2, angle: Float) {
-        withRotation({
+    override fun polygon(points: List<Vector2D>, position: Vector2D, angle: Float) {
+        graphics.shapeMode(PGraphics.CENTER)
+        withRototraslation(position, angle) {
+            graphics.beginShape()
+            points.forEach {
+                graphics.vertex(it.x, it.y)
+            }
+            graphics.endShape(PGraphics.CLOSE)
+        }
+    }
+
+    override fun rectangle(width: Int, height: Int, position: Vector2D, angle: Float) {
+        withRototraslation(position, angle) {
             graphics.rect(
-                position.x,
-                position.y,
-                width.toFloat(),
-                height.toFloat()
+                    0f,
+                    0f,
+                    width.toFloat(),
+                    height.toFloat()
             )
-        }, angle)
+        }
     }
 
     override fun setDrawColors(drawColors: DrawColors) {
@@ -42,10 +52,15 @@ class PGraphicsPlane(private val graphics: PGraphics): Plane {
 
     override fun getHeight(): Int = graphics.height
 
-    private fun withRotation(function: () -> Unit, angle: Float) {
+    private fun withRototraslation(position: Vector2D, angle: Float, function: () -> Unit) {
         graphics.pushMatrix()
-        graphics.rotate(angle)
+        graphics.translate(position.x, position.y)
+        graphics.rotate(angle - ANGLE_OFFSET)
         function()
         graphics.popMatrix()
+    }
+
+    companion object {
+        private const val ANGLE_OFFSET = Math.PI.toFloat() / 2
     }
 }

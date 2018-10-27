@@ -1,5 +1,7 @@
-package com.wawey.processing.view
+package com.wawey.processing.view.model
 
+import com.wawey.processing.view.Drawable
+import com.wawey.processing.view.Plane
 import java.awt.Shape
 import java.awt.geom.AffineTransform
 
@@ -11,7 +13,7 @@ class ShipView(private val shape: Shape): Drawable {
 
 
     override fun draw(plane: Plane) {
-        shape.getPathIterator(null, 20.toDouble())
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun isActive(): Boolean {
