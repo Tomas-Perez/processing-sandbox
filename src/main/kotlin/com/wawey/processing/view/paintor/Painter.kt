@@ -1,9 +1,11 @@
 package com.wawey.processing.view.paintor
 
 import com.wawey.processing.model.SpawnObserver
+import com.wawey.processing.model.entity.asteroid.Asteroid
 import com.wawey.processing.model.entity.bullet.Bullet
 import com.wawey.processing.model.entity.ship.Ship
 import com.wawey.processing.view.Drawable
+import com.wawey.processing.view.model.AsteroidView
 import com.wawey.processing.view.model.BulletView
 import com.wawey.processing.view.model.ShipView
 
@@ -21,6 +23,10 @@ class ShipPainter: Painter<Ship> {
 
 class BulletPainter: Painter<Bullet> {
     override fun draw(t: Bullet): Drawable = BulletView(t.shape, t.state)
+}
+
+class AsteroidPainter: Painter<Asteroid> {
+    override fun draw(t: Asteroid): Drawable = AsteroidView(t.shape, t.state)
 }
 
 interface SpawnPainter<T> : SpawnObserver<T>{

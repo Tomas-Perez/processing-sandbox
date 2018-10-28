@@ -14,10 +14,9 @@ import java.awt.Shape
  */
 class SmallShip(position: Vector2D, private val bounds: Bounds, var gun: Gun): Ship {
 
-    private val _state = ShipState(position = position)
     private val observers: MutableList<ShipObserver> = mutableListOf()
 
-    override val state: ShipState = _state
+    override val state: ShipState = ShipState(position = position)
     override var destroyed: Boolean = state.destroyed
 
     private val shape: Shape = Polygon(
@@ -27,6 +26,11 @@ class SmallShip(position: Vector2D, private val bounds: Bounds, var gun: Gun): S
     )
 
     override fun update() = with(state) {
+        if (hp <= 0) {
+            destroyed = true
+            return
+        }
+
         position = position.add(Vector2Adapter.fromModule(speed, heading))
         speed *= 0.85f
         if (shooting) {
@@ -35,10 +39,10 @@ class SmallShip(position: Vector2D, private val bounds: Bounds, var gun: Gun): S
             shooting = false
         }
 
-        boundCheck()
+        checkBounds()
     }
 
-    private fun boundCheck() = with(state){
+    private fun checkBounds() = with(state) {
         var adjustedX = position.x
         var adjustedY = position.y
 

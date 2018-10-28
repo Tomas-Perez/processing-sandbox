@@ -19,10 +19,6 @@ data class ShipState(
         var speed: Float = 0f,
         var heading: Float = (Math.PI / 2).toFloat(),
         var shooting: Boolean = false,
-        var hp: Int = 100
-) {
-    var destroyed: Boolean = false
-        get() {
-            return hp <= 0
-        }
-}
+        var hp: Int = 100,
+        var destroyed: Boolean = false
+)

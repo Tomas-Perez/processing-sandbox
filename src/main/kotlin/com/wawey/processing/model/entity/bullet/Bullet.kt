@@ -1,5 +1,6 @@
 package com.wawey.processing.model.entity.bullet
 
+import com.wawey.processing.model.Bounds
 import com.wawey.processing.model.entity.EntityVisitor
 import com.wawey.processing.model.entity.GameEntity
 import com.wawey.processing.model.vector2D.Vector2Adapter
@@ -13,6 +14,10 @@ interface Bullet: GameEntity {
     val state: BulletState
 
     override fun <R> accept(entityVisitor: EntityVisitor<R>): R = entityVisitor.visit(this)
+
+    fun copy(position: Vector2D? = null,
+             heading: Float? = null,
+             speed: Float? = null): Bullet
 }
 
 data class BulletState(

@@ -6,11 +6,9 @@ import com.wawey.processing.model.entity.GameEntity
  *
  * @author Tomas Perez Molina
  */
-class StarShipWorld(_bounds: Bounds): World {
+class StarShipWorld(override val bounds: Bounds): World {
 
     private var entities: List<GameEntity> = emptyList()
-
-    override val bounds: Bounds = _bounds
 
     override fun addEntity(entity: GameEntity) {
         entities = entities.plus(entity)

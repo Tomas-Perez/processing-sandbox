@@ -13,11 +13,11 @@ import kotlin.math.abs
  * @author Tomas Perez Molina
  */
 class LaserBullet(position: Vector2D, heading: Float, speed: Float, private val bounds: Bounds): Bullet {
-    private val _state = BulletState(position = position, heading = heading, speed = speed)
 
     private val shape: Shape = Rectangle(0, 0, 3, 3)
 
-    override val state: BulletState = _state
+    override val state: BulletState = BulletState(position = position, heading = heading, speed = speed)
+
     override var destroyed: Boolean = state.destroyed
         get() = state.destroyed
 
@@ -27,8 +27,7 @@ class LaserBullet(position: Vector2D, heading: Float, speed: Float, private val 
     }
 
     private fun checkBounds() = with(state) {
-        if ((position.x !in 0..bounds.x && abs(position.x - bounds.x) > 20) ||
-            (position.y !in 0..bounds.y && abs(position.y - bounds.y) > 20)) {
+        if (bounds.out(position.x.toInt(), position.y.toInt(), offset = 50)) {
             destroyed = true
         }
     }
@@ -40,4 +39,11 @@ class LaserBullet(position: Vector2D, heading: Float, speed: Float, private val 
     override fun collisionedWith(collisionable: GameEntity?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
+    override fun copy(position: Vector2D?, heading: Float?, speed: Float?): Bullet =
+        LaserBullet(
+            position = position?: this.state.position,
+            heading = heading?: this.state.heading,
+            speed = speed?: this.state.speed,
+            bounds = bounds)
 }
