@@ -1,9 +1,13 @@
-package com.wawey.processing.sandbox
+package com.wawey.processing
 
 import com.wawey.processing.controller.*
-import com.wawey.processing.model.SmallShip
+import com.wawey.processing.model.Bounds
+import com.wawey.processing.model.ShipSpawner
 import com.wawey.processing.model.StarShipWorld
 import com.wawey.processing.view.PGraphicsPlane
+import com.wawey.processing.view.paintor.BaseSpawnPainter
+import com.wawey.processing.view.paintor.BulletPainter
+import com.wawey.processing.view.paintor.ShipPainter
 import com.wawey.processing.view.renderer.LayeredRenderer
 import edu.austral.starship.base.Main
 import edu.austral.starship.base.framework.GameFramework
@@ -21,19 +25,25 @@ typealias JavaKeyEvent = java.awt.event.KeyEvent
 class StarshipGame: GameFramework{
     private val handler: KeyEventHandler = MapKeyEventHandler()
     private val adapter: ProcessingKeyEventAdapter = ProcessingKeyEventAdapter(handler)
-    private val screenSize: Int = 800
+    private val bounds = Bounds(1000, 1000)
     private val gameplayController: GameplayController
 
     init {
-        gameplayController = StarShipGameplayController(LayeredRenderer(), StarShipWorld(screenSize, screenSize))
-        val ship = SmallShip(screenSize, screenSize)
+        gameplayController = StarShipGameplayController(
+            LayeredRenderer(),
+            StarShipWorld(bounds),
+            ShipPainter(),
+            BaseSpawnPainter(BulletPainter())
+        )
+        val spawner = ShipSpawner(bounds)
+        val ship = spawner.spawn(bounds.x / 2, bounds.y / 2)
         gameplayController.addShip(ship)
         val config = ShipControllerConfiguration(
-                forwardKey = JavaKeyEvent.VK_UP,
-                backwardKey = JavaKeyEvent.VK_DOWN,
-                leftKey = JavaKeyEvent.VK_LEFT,
-                rightKey = JavaKeyEvent.VK_RIGHT,
-                shootKey = JavaKeyEvent.VK_SPACE
+            forwardKey = JavaKeyEvent.VK_UP,
+            backwardKey = JavaKeyEvent.VK_DOWN,
+            leftKey = JavaKeyEvent.VK_LEFT,
+            rightKey = JavaKeyEvent.VK_RIGHT,
+            shootKey = JavaKeyEvent.VK_SPACE
         )
         val shipController = ConfigurableShipController(ship, config)
         shipController.register(handler)
@@ -41,7 +51,7 @@ class StarshipGame: GameFramework{
 
 
     override fun setup(windowsSettings: WindowSettings, imageLoader: ImageLoader) {
-        windowsSettings.setSize(screenSize, screenSize)
+        windowsSettings.setSize(bounds.x, bounds.y)
     }
 
     override fun draw(graphics: PGraphics, timeSinceLastDraw: Float, keySet: MutableSet<Int>) {

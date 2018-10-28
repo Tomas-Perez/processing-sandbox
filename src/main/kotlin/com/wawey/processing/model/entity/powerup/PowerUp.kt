@@ -1,4 +1,7 @@
-package com.wawey.processing.model
+package com.wawey.processing.model.entity.powerup
+
+import com.wawey.processing.model.entity.EntityVisitor
+import com.wawey.processing.model.entity.GameEntity
 
 /**
  *

@@ -1,17 +1,16 @@
 package com.wawey.processing.model
 
+import com.wawey.processing.model.entity.GameEntity
+
 /**
  *
  * @author Tomas Perez Molina
  */
-class StarShipWorld(private val _boundsX: Int, private val _boundsY: Int): World {
+class StarShipWorld(_bounds: Bounds): World {
 
     private var entities: List<GameEntity> = emptyList()
 
-    override val boundsX: Int
-        get() = _boundsX
-    override val boundsY: Int
-        get() = _boundsY
+    override val bounds: Bounds = _bounds
 
     override fun addEntity(entity: GameEntity) {
         entities = entities.plus(entity)
@@ -20,7 +19,7 @@ class StarShipWorld(private val _boundsX: Int, private val _boundsY: Int): World
     override fun update() {
         entities = entities
                 .asSequence()
-                .filterNot { it.isDestroyed() }
+                .filterNot { it.destroyed }
                 .onEach { it.update() }
                 .toList()
     }

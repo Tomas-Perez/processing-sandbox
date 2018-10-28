@@ -1,4 +1,4 @@
-package com.wawey.processing.model
+package com.wawey.processing.model.entity
 
 /**
  *

@@ -1,6 +1,6 @@
 package edu.austral.starship;
 
-import com.wawey.processing.sandbox.StarshipGame;
+import com.wawey.processing.StarshipGame;
 import edu.austral.starship.base.framework.GameFramework;
 import edu.austral.starship.base.framework.ImageLoader;
 import edu.austral.starship.base.framework.WindowSettings;

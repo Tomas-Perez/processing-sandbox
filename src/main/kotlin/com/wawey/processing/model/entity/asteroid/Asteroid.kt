@@ -1,4 +1,7 @@
-package com.wawey.processing.model
+package com.wawey.processing.model.entity.asteroid
+
+import com.wawey.processing.model.entity.EntityVisitor
+import com.wawey.processing.model.entity.GameEntity
 
 /**
  *

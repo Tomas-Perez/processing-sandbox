@@ -1,6 +1,6 @@
 package com.wawey.processing.controller
 
-import com.wawey.processing.model.Ship
+import com.wawey.processing.model.entity.ship.Ship
 
 /**
  *

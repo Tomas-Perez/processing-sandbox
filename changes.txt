@@ -4,3 +4,5 @@ change DrawColors from Strings to Colors, added borderWidth
 getWidth, getHeight to plane
 keyEventObserver changed to () -> Unit
 add plane to StarshipGame
+add xy to spawners
+add Bounds
