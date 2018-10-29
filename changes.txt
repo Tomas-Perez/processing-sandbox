@@ -1,11 +1,10 @@
-keyRelease added to KeyEventHandler
 add ShapeUtil
 change DrawColors from Strings to Colors, added borderWidth
 getWidth, getHeight to plane
-keyEventObserver changed to () -> Unit
 add plane to StarshipGame
 add xy to spawners
 add Bounds
 add copy to bullet
+add Collider, make that Collisionable, ship returns a collider
 
-NOTA: setFrameRate no anda
+NOTA: setFrameRate no anda, CollisionEngine checkCollisions tiene que ser publico
