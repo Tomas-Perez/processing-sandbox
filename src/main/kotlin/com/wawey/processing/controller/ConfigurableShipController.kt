@@ -18,11 +18,21 @@ class ConfigurableShipController(private val ship: ControllableShip, private val
     override fun notifyShoot() = ship.startShooting()
 
     override fun register(handler: KeyEventHandler) = with(handler) {
-        addObserver(configuration.forwardKey) { notifyForward() }
-        addObserver(configuration.backwardKey) { notifyBackward() }
-        addObserver(configuration.leftKey) { notifyLeft() }
-        addObserver(configuration.rightKey) { notifyRight() }
-        addObserver(configuration.shootKey) { notifyShoot() }
+        addObserver(configuration.forwardKey,   object : KeyEventObserver {
+            override fun notifyKeyPressed() = notifyForward()
+        })
+        addObserver(configuration.backwardKey,  object : KeyEventObserver {
+            override fun notifyKeyPressed() = notifyBackward()
+        })
+        addObserver(configuration.leftKey,      object : KeyEventObserver {
+            override fun notifyKeyPressed() = notifyLeft()
+        })
+        addObserver(configuration.rightKey,     object : KeyEventObserver {
+            override fun notifyKeyPressed() = notifyRight()
+        })
+        addObserver(configuration.shootKey,     object : KeyEventObserver {
+            override fun notifyKeyPressed() = notifyShoot()
+        })
     }
 
     override fun deregister(handler: KeyEventHandler) = with(handler) {
