@@ -14,7 +14,8 @@ import kotlin.math.abs
  */
 class LaserBullet(position: Vector2D, heading: Float, speed: Float, private val bounds: Bounds): Bullet {
 
-    private val shape: Shape = Rectangle(0, 0, 3, 3)
+    override val shape = Rectangle(0, 0, 3, 3)
+    override val collider = BulletCollider(this)
 
     override val state: BulletState = BulletState(position = position, heading = heading, speed = speed)
 
@@ -34,11 +35,6 @@ class LaserBullet(position: Vector2D, heading: Float, speed: Float, private val 
 
     override fun hit(damage: Int) = Unit
 
-    override fun getShape(): Shape = shape
-
-    override fun collisionedWith(collisionable: GameEntity?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
     override fun copy(position: Vector2D?, heading: Float?, speed: Float?): Bullet =
         LaserBullet(

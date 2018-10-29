@@ -1,12 +1,10 @@
 package com.wawey.processing.model.entity.ship
 
 import com.wawey.processing.model.Bounds
-import com.wawey.processing.model.entity.GameEntity
 import com.wawey.processing.model.entity.gun.Gun
 import com.wawey.processing.model.vector2D.Vector2Adapter
 import com.wawey.processing.model.vector2D.Vector2D
 import java.awt.Polygon
-import java.awt.Shape
 
 /**
  *
@@ -16,12 +14,13 @@ class SmallShip(position: Vector2D, private val bounds: Bounds, var gun: Gun): S
 
     private val observers: MutableList<ShipObserver> = mutableListOf()
 
-    override val state: ShipState = ShipState(position = position)
-    override var destroyed: Boolean = state.destroyed
-    private var acceleration: Float = 0f
-    private var rotation: Float = 0f
+    override val state = ShipState(position = position)
+    override val collider = ShipCollider(this)
+    override var destroyed = state.destroyed
+    private var acceleration = 0f
+    private var rotation = 0f
 
-    private val shape: Shape = Polygon(
+    override val shape = Polygon(
             intArrayOf(-30, 0, 30, 0, -30),
             intArrayOf(32, 12, 32, -37, 32),
             5
@@ -68,12 +67,6 @@ class SmallShip(position: Vector2D, private val bounds: Bounds, var gun: Gun): S
 
     override fun hit(damage: Int) {
         state.hp -= damage
-    }
-
-    override fun getShape(): Shape = shape
-
-    override fun collisionedWith(collisionable: GameEntity) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun applyAcceleration(a: Float) {

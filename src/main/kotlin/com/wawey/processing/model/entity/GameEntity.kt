@@ -1,13 +1,15 @@
 package com.wawey.processing.model.entity
 
-import edu.austral.starship.base.collision.Collisionable
+import java.awt.Shape
 
 /**
  *
  * @author Tomas Perez Molina
  */
-interface GameEntity: Collisionable<GameEntity> {
+interface GameEntity {
     var destroyed: Boolean
+    val collider: Collider
+    val shape: Shape
 
     fun <R> accept(entityVisitor: EntityVisitor<R>): R
     fun update()

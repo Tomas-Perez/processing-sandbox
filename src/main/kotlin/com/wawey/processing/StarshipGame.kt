@@ -12,6 +12,7 @@ import com.wawey.processing.view.paintor.BulletPainter
 import com.wawey.processing.view.paintor.ShipPainter
 import com.wawey.processing.view.renderer.LayeredRenderer
 import edu.austral.starship.base.Main
+import edu.austral.starship.base.collision.CollisionEngine
 import edu.austral.starship.base.framework.GameFramework
 import edu.austral.starship.base.framework.ImageLoader
 import edu.austral.starship.base.framework.WindowSettings
@@ -34,7 +35,7 @@ class StarshipGame: GameFramework{
     init {
         gameplayController = StarShipGameplayController(
             LayeredRenderer(),
-            StarShipWorld(bounds),
+            StarShipWorld(bounds, CollisionEngine()),
             AsteroidSpawner(bounds),
             ShipPainter(),
             BaseSpawnPainter(AsteroidPainter()),

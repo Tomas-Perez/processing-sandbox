@@ -9,7 +9,7 @@ public class CollisionEngine<T extends Collisionable<T>> {
 
     private static <T> List<T> tail(List<T> list) { return list.subList(1, list.size());}
 
-    void checkCollisions(List<T> collisionables) {
+    public void checkCollisions(List<T> collisionables) {
         if (collisionables.isEmpty()) return;
 
         checkCollisions(head(collisionables), tail(collisionables));

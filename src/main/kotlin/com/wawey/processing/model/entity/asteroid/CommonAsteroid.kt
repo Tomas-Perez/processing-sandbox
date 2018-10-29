@@ -1,7 +1,11 @@
 package com.wawey.processing.model.entity.asteroid
 
 import com.wawey.processing.model.Bounds
+import com.wawey.processing.model.entity.EntityVisitor
 import com.wawey.processing.model.entity.GameEntity
+import com.wawey.processing.model.entity.bullet.Bullet
+import com.wawey.processing.model.entity.powerup.PowerUp
+import com.wawey.processing.model.entity.ship.Ship
 import com.wawey.processing.model.vector2D.Vector2Adapter
 import com.wawey.processing.model.vector2D.Vector2D
 import java.awt.Polygon
@@ -13,8 +17,8 @@ import java.awt.Shape
  */
 class CommonAsteroid(val size: Int, position: Vector2D, heading: Float, speed: Float, private val bounds: Bounds): Asteroid {
     override val state: AsteroidState = AsteroidState(position = position, speed = speed, heading = heading)
-
-    private val shape: Shape = randomAsteroid(size, (size * 0.2).toInt())
+    override val shape: Shape = randomAsteroid(size, (size * 0.2).toInt())
+    override val collider = AsteroidCollider(this)
 
     private var destroyableByOutOfBounds = false
 
@@ -24,7 +28,7 @@ class CommonAsteroid(val size: Int, position: Vector2D, heading: Float, speed: F
     override fun update() = with(state) {
         if (hp <= 0) {
             destroyed = true
-            return;
+            return
         }
 
         position = position.add(Vector2Adapter.fromModule(speed, heading))
@@ -45,12 +49,6 @@ class CommonAsteroid(val size: Int, position: Vector2D, heading: Float, speed: F
 
     override fun hit(damage: Int) {
         state.hp -= damage
-    }
-
-    override fun getShape(): Shape = shape
-
-    override fun collisionedWith(collisionable: GameEntity?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     companion object {
