@@ -57,7 +57,9 @@ class StarshipGame: GameFramework{
 
 
     override fun setup(windowsSettings: WindowSettings, imageLoader: ImageLoader) {
-        windowsSettings.setSize(bounds.x + 100, bounds.y + 100)
+        windowsSettings
+                .setSize(bounds.x + 100, bounds.y + 100)
+                .setFrameRate(120)
     }
 
     override fun draw(graphics: PGraphics, timeSinceLastDraw: Float, keySet: MutableSet<Int>) {

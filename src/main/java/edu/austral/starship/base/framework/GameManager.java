@@ -10,9 +10,14 @@ import java.util.Set;
 public class GameManager extends PApplet {
     private final GameFramework gameFramework = new CustomGameFramework();
     private final Set<Integer> keySet = new HashSet<>();
+    private final WindowSettings windowsSettings = new WindowSettings(this);
 
     public void settings() {
-        gameFramework.setup(new WindowSettings(this), new ImageLoader(this));
+        gameFramework.setup(windowsSettings, new ImageLoader(this));
+    }
+
+    public void setup() {
+        windowsSettings.applyFrameRate();
     }
 
     public void draw() {

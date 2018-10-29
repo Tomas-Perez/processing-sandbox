@@ -18,6 +18,8 @@ class SmallShip(position: Vector2D, private val bounds: Bounds, var gun: Gun): S
 
     override val state: ShipState = ShipState(position = position)
     override var destroyed: Boolean = state.destroyed
+    private var acceleration: Float = 0f
+    private var rotation: Float = 0f
 
     private val shape: Shape = Polygon(
             intArrayOf(-30, 0, 30, 0, -30),
@@ -30,7 +32,10 @@ class SmallShip(position: Vector2D, private val bounds: Bounds, var gun: Gun): S
             destroyed = true
             return
         }
-
+        speed += acceleration
+        acceleration = 0f
+        heading += rotation
+        rotation = 0f
         position = position.add(Vector2Adapter.fromModule(speed, heading))
         speed *= 0.85f
         if (shooting) {
@@ -72,11 +77,11 @@ class SmallShip(position: Vector2D, private val bounds: Bounds, var gun: Gun): S
     }
 
     override fun applyAcceleration(a: Float) {
-        state.speed += a
+        acceleration = a
     }
 
     override fun applyRotation(r: Float) {
-        state.heading += r
+        rotation = r
     }
 
     override fun startShooting() {

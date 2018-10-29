@@ -4,6 +4,7 @@ import processing.core.PApplet;
 
 public class WindowSettings {
     private final PApplet applet;
+    private int frameRate = 60;
 
     public WindowSettings(PApplet applet) {
         this.applet = applet;
@@ -35,7 +36,11 @@ public class WindowSettings {
     }
 
     public WindowSettings setFrameRate(int rate) {
-        applet.frameRate(rate);
+        frameRate = rate;
         return this;
+    }
+
+    void applyFrameRate() {
+        applet.frameRate(frameRate);
     }
 }
