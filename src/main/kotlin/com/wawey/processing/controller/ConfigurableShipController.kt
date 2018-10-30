@@ -1,5 +1,7 @@
 package com.wawey.processing.controller
 
+import com.wawey.processing.controller.event.KeyEventHandler
+import com.wawey.processing.controller.event.KeyEventObserver
 import com.wawey.processing.model.entity.ControllableShip
 
 /**

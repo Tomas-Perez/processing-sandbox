@@ -1,4 +1,4 @@
-package com.wawey.processing.controller
+package com.wawey.processing.controller.gameplay
 
 import com.wawey.processing.model.Bounds
 import com.wawey.processing.model.SpawnObserver

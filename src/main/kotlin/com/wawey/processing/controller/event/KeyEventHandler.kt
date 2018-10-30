@@ -1,4 +1,4 @@
-package com.wawey.processing.controller
+package com.wawey.processing.controller.event
 
 /**
  *

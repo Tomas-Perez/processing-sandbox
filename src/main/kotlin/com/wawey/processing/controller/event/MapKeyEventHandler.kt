@@ -1,4 +1,4 @@
-package com.wawey.processing.controller
+package com.wawey.processing.controller.event
 
 
 /**
@@ -8,7 +8,7 @@ package com.wawey.processing.controller
 class MapKeyEventHandler: KeyEventHandler {
     private val observers: MutableMap<Int, KeyEventObserver> = mutableMapOf()
 
-    override fun addObserver(keyCode: Int, observer:KeyEventObserver) {
+    override fun addObserver(keyCode: Int, observer: KeyEventObserver) {
         observers[keyCode] = observer
     }
 

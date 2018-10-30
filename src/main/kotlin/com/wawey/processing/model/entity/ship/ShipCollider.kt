@@ -15,18 +15,18 @@ import java.awt.geom.AffineTransform
 class ShipCollider(override val entity: Ship): Collider {
 
     override fun visit(ship: Ship) {
-        println("Ship hit ship")
+        /*println("Ship hit ship")*/
     }
 
     override fun visit(asteroid: Asteroid) {
-        println("Ship hit asteroid")
+        /*println("Ship hit asteroid")*/
     }
 
     override fun visit(bullet: Bullet) {
-        println("Ship hit bullet")
+        /*println("Ship hit bullet")*/
     }
 
     override fun visit(powerUp: PowerUp) {
-        println("Ship hit powerup")
+        /*println("Ship hit powerup")*/
     }
 }

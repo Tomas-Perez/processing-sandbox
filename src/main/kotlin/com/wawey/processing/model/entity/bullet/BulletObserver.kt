@@ -12,13 +12,3 @@ interface BulletObserver {
     fun notifyDestroy(entity: GameEntity)
 }
 
-class PointScout(private val pointVisitor: EntityVisitor<Int>): BulletObserver {
-
-    override fun notifyHit(entity: GameEntity) {
-        println(entity.accept(pointVisitor))
-    }
-
-    override fun notifyDestroy(entity: GameEntity) {
-        println(entity.accept(pointVisitor))
-    }
-}

@@ -6,5 +6,6 @@ add xy to spawners
 add Bounds
 add copy to bullet
 add Collider, make that Collisionable, ship returns a collider
+add text to Plane
 
 NOTA: setFrameRate no anda, CollisionEngine checkCollisions tiene que ser publico

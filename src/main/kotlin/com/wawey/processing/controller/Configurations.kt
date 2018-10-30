@@ -12,3 +12,7 @@ data class ShipControllerConfiguration(
         val rightKey: Int,
         val shootKey: Int
 )
+
+data class ShipSpawnControllerConfiguration(
+        val spawnKey: Int
+)

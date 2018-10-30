@@ -54,6 +54,18 @@ class PGraphicsPlane(private val graphics: PGraphics): Plane {
         graphics.stroke(drawColors.border.rgb)
     }
 
+    override fun text(text: String, fontSize: Int, position: Vector2D) {
+        graphics.rectMode(PGraphics.CENTER)
+        graphics.textSize(fontSize.toFloat())
+        withRototraslation(position, ANGLE_OFFSET) {
+            graphics.text(
+                    text,
+                    0f,
+                    0f
+            )
+        }
+    }
+
     private fun withRototraslation(position: Vector2D, angle: Float, function: () -> Unit) {
         graphics.pushMatrix()
         graphics.translate(position.x, position.y)
@@ -61,6 +73,7 @@ class PGraphicsPlane(private val graphics: PGraphics): Plane {
         function()
         graphics.popMatrix()
     }
+
 
     companion object {
         private const val ANGLE_OFFSET = Math.PI.toFloat() / 2
