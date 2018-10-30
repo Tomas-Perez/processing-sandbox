@@ -29,11 +29,4 @@ class ShipCollider(override val entity: Ship): Collider {
     override fun visit(powerUp: PowerUp) {
         println("Ship hit powerup")
     }
-
-    override fun getShape(): Shape {
-        val tx = AffineTransform()
-        tx.translate(entity.state.position.x.toDouble(), entity.state.position.y.toDouble())
-        tx.rotate(entity.state.heading.toDouble())
-        return tx.createTransformedShape(entity.shape)
-    }
 }

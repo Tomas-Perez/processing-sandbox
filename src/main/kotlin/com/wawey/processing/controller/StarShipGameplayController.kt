@@ -1,14 +1,20 @@
 package com.wawey.processing.controller
 
-import com.wawey.processing.model.*
+import com.wawey.processing.model.Bounds
+import com.wawey.processing.model.SpawnObserver
+import com.wawey.processing.model.Spawner
+import com.wawey.processing.model.World
 import com.wawey.processing.model.entity.asteroid.Asteroid
-import com.wawey.processing.model.entity.ship.Ship
 import com.wawey.processing.model.entity.bullet.Bullet
 import com.wawey.processing.model.entity.ship.BaseShipObserver
+import com.wawey.processing.model.entity.ship.Ship
+import com.wawey.processing.model.vector2D.Vector2Adapter
+import com.wawey.processing.random
 import com.wawey.processing.view.Plane
 import com.wawey.processing.view.paintor.Painter
 import com.wawey.processing.view.paintor.SpawnPainter
 import com.wawey.processing.view.renderer.Renderer
+import kotlin.math.max
 
 /**
  *
@@ -27,6 +33,12 @@ class StarShipGameplayController(
     private val timeout = 1000
     private var lastSpawn = System.currentTimeMillis()
 
+    private val bulletBufferObserver = object: SpawnObserver<Bullet> {
+        override fun notifySpawn(t: Bullet) {
+            bulletBuffer = bulletBuffer.plus(t)
+        }
+    }
+
     init {
         asteroidSpawner.addObserver(asteroidSpawnPainter)
     }
@@ -34,11 +46,7 @@ class StarShipGameplayController(
     override fun addShip(s: Ship) {
         s.addObserver(BaseShipObserver().apply {
             addObserver(bulletSpawnPainter)
-            addObserver(object: SpawnObserver<Bullet> {
-                override fun notifySpawn(t: Bullet) {
-                    bulletBuffer = bulletBuffer.plus(t)
-                }
-            })
+            addObserver(bulletBufferObserver)
         })
         renderer.add(shipPainter.draw(s))
         world.addEntity(s)
@@ -48,7 +56,7 @@ class StarShipGameplayController(
 
     override fun update() {
         world.update()
-        val asteroidAmount = (1..1).shuffled().first()
+        val asteroidAmount = (1..4).random()
         spawnAsteroids(asteroidAmount).forEach { world.addEntity(it) }
         bulletBuffer.forEach { world.addEntity(it) }
         bulletBuffer = emptyList()
@@ -58,11 +66,15 @@ class StarShipGameplayController(
 
     private fun spawnAsteroids(amount: Int): List<Asteroid> {
         val current = System.currentTimeMillis()
+        val centerVector = Vector2Adapter.vector(bounds.centerX(), bounds.centerY())
         return if (current - lastSpawn > timeout) {
             lastSpawn = current
-            val xPositionRange = (-200..-100).asIterable().plus((bounds.x + 100..bounds.x + 200)).shuffled().take(amount)
-            val yPositionRange = (-200..-100).asIterable().plus((bounds.y + 100..bounds.y + 200)).shuffled().take(amount)
-            xPositionRange.zip(yPositionRange).map { asteroidSpawner.spawn(it.first, it.second) }
+            (0..amount).map {
+                val module = max(bounds.y, bounds.x) / 2f + 200
+                val angle = Math.toRadians((0..360).random().toDouble()).toFloat()
+                val vector = centerVector.add(Vector2Adapter.fromModule(module, angle))
+                asteroidSpawner.spawn(vector.x.toInt(), vector.y.toInt())
+            }
         } else emptyList()
     }
 }

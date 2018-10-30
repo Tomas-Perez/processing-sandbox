@@ -9,6 +9,7 @@ import com.wawey.processing.model.entity.gun.Spread
 import com.wawey.processing.model.entity.ship.Ship
 import com.wawey.processing.model.entity.ship.SmallShip
 import com.wawey.processing.model.vector2D.Vector2Adapter
+import com.wawey.processing.random
 
 /**
  *
@@ -40,7 +41,7 @@ class AsteroidSpawner(private val bounds: Bounds): Spawner<Asteroid> {
         val initialPosition = Vector2Adapter.vector(x, y)
         val target = Vector2Adapter.vector(getRandomTarget(bounds.x), getRandomTarget(bounds.y))
         return CommonAsteroid(
-                size = (20..50).shuffled().first(),
+                size = (20..50).random(),
                 position = initialPosition,
                 speed = -5f,
                 heading = initialPosition.substract(target).angle(),

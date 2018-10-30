@@ -16,7 +16,7 @@ class BaseShipObserver: ShipObserver {
     private val observers: MutableList<SpawnObserver<Bullet>> = mutableListOf()
 
     override fun notifyShoot(bullets: List<Bullet>) {
-       observers.forEach { o -> bullets.forEach { o.notifySpawn(it) }  }
+        observers.forEach { o -> bullets.forEach { o.notifySpawn(it) }  }
     }
 
     override fun addObserver(o: SpawnObserver<Bullet>) {

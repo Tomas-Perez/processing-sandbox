@@ -16,7 +16,6 @@ class SmallShip(position: Vector2D, private val bounds: Bounds, var gun: Gun): S
 
     override val state = ShipState(position = position)
     override val collider = ShipCollider(this)
-    override var destroyed = state.destroyed
     private var acceleration = 0f
     private var rotation = 0f
 
@@ -39,7 +38,8 @@ class SmallShip(position: Vector2D, private val bounds: Bounds, var gun: Gun): S
         speed *= 0.85f
         if (shooting) {
             val offset = Vector2Adapter.fromModule(-50f, heading)
-            observers.forEach { it.notifyShoot(gun.shoot(position.add(offset), heading, speed)) }
+            val bullets = gun.shoot(position.add(offset), heading, speed)
+            observers.forEach { it.notifyShoot(bullets) }
             shooting = false
         }
 

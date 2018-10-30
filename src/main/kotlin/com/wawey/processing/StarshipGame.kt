@@ -1,10 +1,12 @@
 package com.wawey.processing
 
 import com.wawey.processing.controller.*
-import com.wawey.processing.model.AsteroidSpawner
-import com.wawey.processing.model.Bounds
-import com.wawey.processing.model.ShipSpawner
-import com.wawey.processing.model.StarShipWorld
+import com.wawey.processing.model.*
+import com.wawey.processing.model.entity.bullet.Bullet
+import com.wawey.processing.model.entity.bullet.PointScout
+import com.wawey.processing.model.entity.ship.BaseShipObserver
+import com.wawey.processing.model.entity.ship.ShipObserver
+import com.wawey.processing.model.score.PointVisitor
 import com.wawey.processing.view.PGraphicsPlane
 import com.wawey.processing.view.paintor.AsteroidPainter
 import com.wawey.processing.view.paintor.BaseSpawnPainter
@@ -30,12 +32,13 @@ class StarshipGame: GameFramework{
     private val adapter: ProcessingKeyEventAdapter = ProcessingKeyEventAdapter(handler)
     private val bounds = Bounds(2560 / 2, 1440 / 2)
     private val gameplayController: GameplayController
-    private var lag: Float = 0f
+    private var lag = 0f
+    private val screenExtra = 100
 
     init {
         gameplayController = StarShipGameplayController(
             LayeredRenderer(),
-            StarShipWorld(bounds, CollisionEngine()),
+            StarShipWorld(CollisionEngine()),
             AsteroidSpawner(bounds),
             ShipPainter(),
             BaseSpawnPainter(AsteroidPainter()),
@@ -44,6 +47,12 @@ class StarshipGame: GameFramework{
         )
         val spawner = ShipSpawner(bounds)
         val ship = spawner.spawn(bounds.centerX(), bounds.centerY())
+        val baseObserver = BaseShipObserver().apply {
+            addObserver(object : SpawnObserver<Bullet> {
+                override fun notifySpawn(t: Bullet) = t.addObserver(PointScout(PointVisitor()))
+            })
+        }
+        ship.addObserver(baseObserver)
         gameplayController.addShip(ship)
         val config = ShipControllerConfiguration(
             forwardKey = JavaKeyEvent.VK_W,
@@ -59,12 +68,12 @@ class StarshipGame: GameFramework{
 
     override fun setup(windowsSettings: WindowSettings, imageLoader: ImageLoader) {
         windowsSettings
-                .setSize(bounds.x + 100, bounds.y + 100)
+                .setSize(bounds.x + screenExtra, bounds.y + screenExtra)
                 .setFrameRate(120)
     }
 
     override fun draw(graphics: PGraphics, timeSinceLastDraw: Float, keySet: MutableSet<Int>) {
-        graphics.translate(50f, 50f)
+        graphics.translate(screenExtra / 2f, screenExtra / 2f)
         graphics.noFill()
         graphics.stroke(255)
         graphics.strokeWeight(3f)

@@ -5,8 +5,6 @@ import com.wawey.processing.model.entity.GameEntity
 import com.wawey.processing.model.vector2D.Vector2Adapter
 import com.wawey.processing.model.vector2D.Vector2D
 import java.awt.Rectangle
-import java.awt.Shape
-import kotlin.math.abs
 
 /**
  *
@@ -16,11 +14,9 @@ class LaserBullet(position: Vector2D, heading: Float, speed: Float, private val 
 
     override val shape = Rectangle(0, 0, 3, 3)
     override val collider = BulletCollider(this)
-
     override val state: BulletState = BulletState(position = position, heading = heading, speed = speed)
 
-    override var destroyed: Boolean = state.destroyed
-        get() = state.destroyed
+    private val observers = mutableListOf<BulletObserver>()
 
     override fun update() = with(state) {
         position = position.add(Vector2Adapter.fromModule(speed, heading))
@@ -35,6 +31,18 @@ class LaserBullet(position: Vector2D, heading: Float, speed: Float, private val 
 
     override fun hit(damage: Int) = Unit
 
+    override fun hit(entity: GameEntity) {
+        entity.hit(100)
+        observers.forEach { it.notifyHit(entity) }
+    }
+
+    override fun addObserver(o: BulletObserver) {
+        observers.add(o)
+    }
+
+    override fun removeObserver(o: BulletObserver) {
+        observers.remove(o)
+    }
 
     override fun copy(position: Vector2D?, heading: Float?, speed: Float?): Bullet =
         LaserBullet(

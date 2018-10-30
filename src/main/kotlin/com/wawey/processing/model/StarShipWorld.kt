@@ -8,7 +8,7 @@ import edu.austral.starship.base.collision.CollisionEngine
  *
  * @author Tomas Perez Molina
  */
-class StarShipWorld(override val bounds: Bounds, private val engine: CollisionEngine<Collider>): World {
+class StarShipWorld(private val engine: CollisionEngine<Collider>): World {
 
     private var entities: List<GameEntity> = emptyList()
 
@@ -19,10 +19,8 @@ class StarShipWorld(override val bounds: Bounds, private val engine: CollisionEn
     override fun update() {
         entities = entities
                 .asSequence()
-                .filterNot { it.destroyed }
-                .also {
-                    engine.checkCollisions(it.map { x -> x.collider }.toList())
-                }
+                .filterNot { it.state.destroyed }
+                .also { engine.checkCollisions(it.map { x -> x.collider }.toList()) }
                 .onEach { it.update() }
                 .toList()
     }

@@ -72,7 +72,7 @@ class ShapeUtilTest {
         }
 
         private fun checkShape(s: Shape, l: List<Vector2D>) {
-            val points = ShapeUtil.getPoints(s, 2)
+            val points = s.getPoints()
             assertThat(points).usingElementComparator{ v1, v2 -> Vector2D.compareByXY(v1, v2) }.containsAll(l)
         }
     }

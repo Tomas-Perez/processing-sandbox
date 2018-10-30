@@ -12,24 +12,16 @@ import java.awt.geom.AffineTransform
  * @author Tomas Perez Molina
  */
 class BulletCollider(override val entity: Bullet): Collider {
+
     override fun visit(ship: Ship) {
-        println("Bullet hit ship")
+        entity.hit(ship)
     }
 
     override fun visit(asteroid: Asteroid) {
-        println("Bullet hit asteroid")
+        entity.hit(asteroid)
     }
 
     override fun visit(bullet: Bullet) = Unit
 
-    override fun visit(powerUp: PowerUp) {
-        println("Bullet hit powerup")
-    }
-
-    override fun getShape(): Shape {
-        val tx = AffineTransform()
-        tx.translate(entity.state.position.x.toDouble(), entity.state.position.y.toDouble())
-        tx.rotate(entity.state.heading.toDouble())
-        return tx.createTransformedShape(entity.shape)
-    }
+    override fun visit(powerUp: PowerUp) = Unit
 }
