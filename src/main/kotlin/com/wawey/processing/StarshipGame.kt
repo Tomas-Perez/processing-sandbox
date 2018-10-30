@@ -44,23 +44,6 @@ class StarshipGame: GameFramework{
     private val screenExtra = 200
 
     init {
-        val spawnControllerConfig = ShipSpawnControllerConfiguration(JavaKeyEvent.VK_0)
-        val config1 = ShipControllerConfiguration(
-                forwardKey = JavaKeyEvent.VK_W,
-                backwardKey = JavaKeyEvent.VK_S,
-                leftKey = JavaKeyEvent.VK_A,
-                rightKey = JavaKeyEvent.VK_D,
-                shootKey = JavaKeyEvent.VK_SPACE
-        )
-
-        val config2 = ShipControllerConfiguration(
-                forwardKey = JavaKeyEvent.VK_UP,
-                backwardKey = JavaKeyEvent.VK_DOWN,
-                leftKey = JavaKeyEvent.VK_LEFT,
-                rightKey = JavaKeyEvent.VK_RIGHT,
-                shootKey = JavaKeyEvent.VK_SHIFT
-        )
-
         gameController = GameController(
                 gameplayController = StarShipGameplayController(
                         LayeredRenderer(),
@@ -74,8 +57,8 @@ class StarshipGame: GameFramework{
                 shipSpawnController = ConfigurableShipSpawnController(
                         bounds = bounds,
                         shipSpawner = ShipSpawner(bounds),
-                        configuration = spawnControllerConfig,
-                        shipConfigurations = listOf(config1, config2)
+                        configuration = default.spawnControlConfig,
+                        shipConfigurations = default.shipConfigs
                 )
         )
 
