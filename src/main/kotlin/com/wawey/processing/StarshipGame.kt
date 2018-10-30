@@ -39,31 +39,25 @@ class StarshipGame: GameFramework{
     private val handler: KeyEventHandler = MapKeyEventHandler()
     private val adapter: ProcessingKeyEventAdapter = ProcessingKeyEventAdapter(handler)
     private val bounds = Bounds(2560 / 2, 1440 / 2)
-    private val gameController: ScreenController
     private var lag = 0f
     private val screenExtra = 200
-
-    init {
-        gameController = GameController(
-                gameplayController = StarShipGameplayController(
-                        LayeredRenderer(),
-                        StarShipWorld(CollisionEngine()),
-                        AsteroidSpawner(bounds),
-                        ShipPainter(),
-                        BaseSpawnPainter(AsteroidPainter()),
-                        BaseSpawnPainter(BulletPainter()),
-                        bounds),
-                hudController = StarShipHUDController(bounds),
-                shipSpawnController = ConfigurableShipSpawnController(
-                        bounds = bounds,
-                        shipSpawner = ShipSpawner(bounds),
-                        configuration = default.spawnControlConfig,
-                        shipConfigurations = default.shipConfigs
-                )
-        )
-
-        gameController.register(handler)
-    }
+    private val gameController = GameController(
+            gameplayController = StarShipGameplayController(
+                    renderer = LayeredRenderer(),
+                    world = StarShipWorld(CollisionEngine()),
+                    asteroidSpawner = AsteroidSpawner(bounds),
+                    shipPainter = ShipPainter(),
+                    asteroidSpawnPainter = BaseSpawnPainter(AsteroidPainter()),
+                    bulletSpawnPainter = BaseSpawnPainter(BulletPainter()),
+                    bounds = bounds),
+            hudController = StarShipHUDController(bounds),
+            shipSpawnController = ConfigurableShipSpawnController(
+                    bounds = bounds,
+                    shipSpawner = ShipSpawner(bounds),
+                    configuration = default.spawnControlConfig,
+                    shipConfigurations = default.shipConfigs
+            )
+    ).apply { register(handler) }
 
 
     override fun setup(windowsSettings: WindowSettings, imageLoader: ImageLoader) {
