@@ -15,6 +15,7 @@ import com.wawey.processing.view.Plane
 import com.wawey.processing.view.paintor.Painter
 import com.wawey.processing.view.paintor.SpawnPainter
 import com.wawey.processing.view.renderer.Renderer
+import java.awt.Color
 import kotlin.math.max
 
 /**
@@ -43,12 +44,12 @@ class StarShipGameplayController(
         asteroidSpawner.addObserver(asteroidSpawnPainter)
     }
 
-    override fun addShip(s: Ship) {
+    override fun addShip(s: Ship, c: Color) {
         s.addObserver(ShootingObserver().apply {
             addObserver(bulletSpawnPainter)
             addObserver(bulletBufferObserver)
         })
-        renderer.add(shipPainter.draw(s))
+        renderer.add(shipPainter.draw(s, c))
         world.addEntity(s)
     }
 

@@ -11,11 +11,11 @@ import java.awt.Shape
 /**
  * @author Tomas Perez Molina
  */
-class BulletView(shape: Shape, private val state: BulletState): Drawable {
+class BulletView(shape: Shape, private val state: BulletState, private val color: Color): Drawable {
     private val points = shape.getPoints()
 
     override fun draw(plane: Plane) {
-        plane.setDrawColors(DrawColors(fill = Color.WHITE, borderWidth = 0))
+        plane.setDrawColors(DrawColors(fill = color, borderWidth = 0))
         plane.polygon(points, state.position, state.heading)
     }
 

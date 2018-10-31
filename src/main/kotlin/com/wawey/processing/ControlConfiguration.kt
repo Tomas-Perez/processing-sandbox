@@ -7,11 +7,13 @@ import com.wawey.processing.controller.ShipSpawnControllerConfiguration
  *
  * @author Tomas Perez Molina
  */
-data class GameConfiguration(val spawnControlConfig: ShipSpawnControllerConfiguration,
-                             val shipConfigs: List<ShipControllerConfiguration>)
+data class ControlConfiguration(
+        val shipSpawn: ShipSpawnControllerConfiguration,
+        val shipControls: List<ShipControllerConfiguration>)
 
 
 private val spawnControllerConfig = ShipSpawnControllerConfiguration(JavaKeyEvent.VK_0)
+
 private val player1 = ShipControllerConfiguration(
         forwardKey = JavaKeyEvent.VK_W,
         backwardKey = JavaKeyEvent.VK_S,
@@ -28,8 +30,7 @@ private val player2 = ShipControllerConfiguration(
         shootKey = JavaKeyEvent.VK_SHIFT
 )
 
-
-val default = GameConfiguration(
-        spawnControlConfig = spawnControllerConfig,
-        shipConfigs = listOf(player1, player2)
+val defaultControlConfig = ControlConfiguration(
+        shipSpawn = spawnControllerConfig,
+        shipControls = listOf(player1, player2)
 )

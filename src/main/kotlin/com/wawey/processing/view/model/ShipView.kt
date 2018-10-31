@@ -12,11 +12,11 @@ import java.awt.Shape
  *
  * @author Tomas Perez Molina
  */
-class ShipView(shape: Shape, private val state: ShipState): Drawable {
+class ShipView(shape: Shape, private val state: ShipState, private val color: Color): Drawable {
     private val points = shape.getPoints()
 
     override fun draw(plane: Plane) {
-        plane.setDrawColors(DrawColors(border = Color.RED, borderWidth = 5))
+        plane.setDrawColors(DrawColors(border = color, borderWidth = 5))
         plane.polygon(points, state.position, state.heading)
     }
 

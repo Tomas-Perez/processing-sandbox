@@ -12,11 +12,11 @@ import java.awt.Shape
  *
  * @author Tomas Perez Molina
  */
-class AsteroidView(shape: Shape, private val state: AsteroidState): Drawable {
+class AsteroidView(shape: Shape, private val state: AsteroidState, private val color: Color): Drawable {
     private val points = shape.getPoints()
 
     override fun draw(plane: Plane) {
-        plane.setDrawColors(DrawColors(fill = Color.BLACK, border = Color.WHITE, borderWidth = 2))
+        plane.setDrawColors(DrawColors(fill = Color.BLACK, border = color, borderWidth = 2))
         plane.polygon(points, state.position, state.heading)
     }
 

@@ -30,10 +30,11 @@ typealias JavaKeyEvent = java.awt.event.KeyEvent
 class StarshipGame: GameFramework{
     private val handler: KeyEventHandler = MapKeyEventHandler()
     private val adapter: ProcessingKeyEventAdapter = ProcessingKeyEventAdapter(handler)
-    private val bounds = Bounds(2560 / 2, 1440 / 2)
+    private val bounds = defaultGameplayConfig.bounds
     private var lag = 0f
     private val screenExtra = 400
     private val gameController = GameController(
+            shipColors = defaultPaintConfig.shipColors,
             gameplayController = StarShipGameplayController(
                     renderer = LayeredRenderer(),
                     world = StarShipWorld(CollisionEngine()),
@@ -44,10 +45,10 @@ class StarshipGame: GameFramework{
                     bounds = bounds),
             hudController = StarShipHUDController(bounds),
             shipSpawnController = ConfigurableShipSpawnController(
-                    bounds = bounds,
+                    spawnLocations = defaultGameplayConfig.shipSpawnLocations,
                     shipSpawner = ShipSpawner(bounds),
-                    configuration = default.spawnControlConfig,
-                    shipConfigurations = default.shipConfigs
+                    configuration = defaultControlConfig.shipSpawn,
+                    shipConfigurations = defaultControlConfig.shipControls
             )
     ).apply { register(handler) }
 

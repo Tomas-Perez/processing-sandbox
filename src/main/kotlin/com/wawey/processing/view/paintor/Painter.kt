@@ -8,25 +8,26 @@ import com.wawey.processing.view.Drawable
 import com.wawey.processing.view.model.AsteroidView
 import com.wawey.processing.view.model.BulletView
 import com.wawey.processing.view.model.ShipView
+import java.awt.Color
 
 /**
  *
  * @author Tomas Perez Molina
  */
 interface Painter<T> {
-    fun draw(t: T): Drawable
+    fun draw(t: T, color: Color = Color.WHITE): Drawable
 }
 
 class ShipPainter: Painter<Ship> {
-    override fun draw(t: Ship): Drawable = ShipView(t.shape, t.state)
+    override fun draw(t: Ship, color: Color): Drawable = ShipView(t.shape, t.state, color)
 }
 
 class BulletPainter: Painter<Bullet> {
-    override fun draw(t: Bullet): Drawable = BulletView(t.shape, t.state)
+    override fun draw(t: Bullet, color: Color): Drawable = BulletView(t.shape, t.state, color)
 }
 
 class AsteroidPainter: Painter<Asteroid> {
-    override fun draw(t: Asteroid): Drawable = AsteroidView(t.shape, t.state)
+    override fun draw(t: Asteroid, color: Color): Drawable = AsteroidView(t.shape, t.state, color)
 }
 
 interface SpawnPainter<T> : SpawnObserver<T>{

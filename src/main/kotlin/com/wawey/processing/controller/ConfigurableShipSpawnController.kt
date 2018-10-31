@@ -3,16 +3,16 @@ package com.wawey.processing.controller
 import com.wawey.processing.Debounce
 import com.wawey.processing.controller.event.KeyEventHandler
 import com.wawey.processing.controller.event.KeyEventObserver
-import com.wawey.processing.model.Bounds
 import com.wawey.processing.model.Spawner
 import com.wawey.processing.model.entity.ship.Ship
+import com.wawey.processing.model.vector2D.Vector2D
 
 /**
  *
  * @author Tomas Perez Molina
  */
 class ConfigurableShipSpawnController(
-        private val bounds: Bounds,
+        private val spawnLocations: List<Vector2D>,
         private val shipSpawner: Spawner<Ship>,
         private val configuration: ShipSpawnControllerConfiguration,
         private val shipConfigurations: List<ShipControllerConfiguration>): ShipSpawnController {
@@ -21,6 +21,7 @@ class ConfigurableShipSpawnController(
     private var shipControllers: List<ShipController> = emptyList()
     private var handler: KeyEventHandler? = null
     private val debounce = Debounce(200)
+    private var lastLocation = spawnLocations.shuffled().first()
 
     override fun getNew(): List<Ship> {
         return shipsBuffer.also { shipsBuffer = emptyList() }
@@ -29,7 +30,9 @@ class ConfigurableShipSpawnController(
     override fun notifySpawnShip() = debounce {
         val handler = this.handler
         if (handler != null && shipControllers.size < shipConfigurations.size) {
-            val ship = shipSpawner.spawn(bounds.centerX(), bounds.centerY())
+            val position = spawnLocations.shuffled().first { it != lastLocation }
+            lastLocation = position
+            val ship = shipSpawner.spawn(position.x.toInt(), position.y.toInt())
             val controller = ConfigurableShipController(ship, shipConfigurations[shipControllers.size])
             controller.register(handler)
             shipControllers = shipControllers.plus(controller)

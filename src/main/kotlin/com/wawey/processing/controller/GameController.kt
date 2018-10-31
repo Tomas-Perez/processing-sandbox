@@ -5,12 +5,12 @@ import com.wawey.processing.controller.gameplay.GameplayController
 import com.wawey.processing.controller.hud.HUDController
 import com.wawey.processing.model.SpawnObserver
 import com.wawey.processing.model.entity.bullet.Bullet
-import com.wawey.processing.model.entity.ship.PlayerShipObserver
 import com.wawey.processing.model.entity.ship.ShootingObserver
 import com.wawey.processing.model.score.Player
 import com.wawey.processing.model.score.PointScout
 import com.wawey.processing.model.score.PointVisitor
 import com.wawey.processing.view.Plane
+import java.awt.Color
 
 /**
  *
@@ -18,7 +18,8 @@ import com.wawey.processing.view.Plane
  */
 class GameController(private val gameplayController: GameplayController,
                      private val hudController: HUDController,
-                     private val shipSpawnController: ShipSpawnController): ScreenController {
+                     private val shipSpawnController: ShipSpawnController,
+                     private val shipColors: List<Color>): ScreenController {
 
     private val players = mutableListOf<Player>()
     private val pointVisitor = PointVisitor()
@@ -31,7 +32,6 @@ class GameController(private val gameplayController: GameplayController,
     override fun update() {
         shipSpawnController.getNew().forEach {
             val newPlayer = Player("Player ${players.size + 1}")
-            players.add(newPlayer)
             val baseObserver = ShootingObserver().apply {
                 addObserver(object : SpawnObserver<Bullet> {
                     override fun notifySpawn(t: Bullet) {
@@ -40,9 +40,10 @@ class GameController(private val gameplayController: GameplayController,
                 })
             }
             it.addObserver(baseObserver)
-            it.addObserver(PlayerShipObserver(newPlayer))
+            it.addObserver(newPlayer)
             hudController.addPlayer(newPlayer)
-            gameplayController.addShip(it)
+            gameplayController.addShip(it, shipColors[players.size])
+            players.add(newPlayer)
         }
         gameplayController.update()
         hudController.update()

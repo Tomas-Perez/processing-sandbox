@@ -31,13 +31,3 @@ class ShootingObserver: ShipObserver, Observable<SpawnObserver<Bullet>> {
         observers.remove(o)
     }
 }
-
-class PlayerShipObserver(private val player: Player): ShipObserver {
-
-    override fun notifyShoot(bullets: List<Bullet>) = Unit
-
-    override fun notifyHit(damage: Int) {
-        player.hp -= damage
-    }
-
-}
