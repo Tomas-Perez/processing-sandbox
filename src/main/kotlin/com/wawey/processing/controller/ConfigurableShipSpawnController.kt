@@ -1,5 +1,6 @@
 package com.wawey.processing.controller
 
+import com.wawey.processing.Debounce
 import com.wawey.processing.controller.event.KeyEventHandler
 import com.wawey.processing.controller.event.KeyEventObserver
 import com.wawey.processing.model.Bounds
@@ -19,12 +20,13 @@ class ConfigurableShipSpawnController(
     private var shipsBuffer: List<Ship> = emptyList()
     private var shipControllers: List<ShipController> = emptyList()
     private var handler: KeyEventHandler? = null
+    private val debounce = Debounce(200)
 
     override fun getNew(): List<Ship> {
         return shipsBuffer.also { shipsBuffer = emptyList() }
     }
 
-    override fun notifySpawnShip() {
+    override fun notifySpawnShip() = debounce {
         val handler = this.handler
         if (handler != null && shipControllers.size < shipConfigurations.size) {
             val ship = shipSpawner.spawn(bounds.centerX(), bounds.centerY())

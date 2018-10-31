@@ -1,5 +1,6 @@
 package com.wawey.processing.model.entity.ship
 
+import com.wawey.processing.Debounce
 import com.wawey.processing.model.Bounds
 import com.wawey.processing.model.entity.gun.Gun
 import com.wawey.processing.model.vector2D.Vector2Adapter
@@ -18,6 +19,7 @@ class SmallShip(position: Vector2D, private val bounds: Bounds, var gun: Gun): S
     override val collider = ShipCollider(this)
     private var acceleration = 0f
     private var rotation = 0f
+    private val debounce = Debounce(500)
 
     override val shape = Polygon(
             intArrayOf(-30, 0, 30, 0, -30),
@@ -77,12 +79,8 @@ class SmallShip(position: Vector2D, private val bounds: Bounds, var gun: Gun): S
         rotation = r
     }
 
-    override fun startShooting() {
+    override fun shoot() = debounce {
         state.shooting = true
-    }
-
-    override fun stopShooting() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun addObserver(o: ShipObserver) {

@@ -1,5 +1,6 @@
 package com.wawey.processing.model.entity.gun
 
+import com.wawey.processing.Debounce
 import com.wawey.processing.model.Bounds
 import com.wawey.processing.model.entity.bullet.Bullet
 import com.wawey.processing.model.entity.bullet.LaserBullet
@@ -18,16 +19,9 @@ interface Gun {
 
 class Laser(private val bounds: Bounds): Gun {
     private val speed = -10f
-    private val timeout = 500
-    private var lastShot = System.currentTimeMillis()
 
-    override fun shoot(origin: Vector2D, heading: Float, boost: Float): List<Bullet> {
-        val current = System.currentTimeMillis()
-        return if (current - lastShot > timeout) {
-            lastShot = current
+    override fun shoot(origin: Vector2D, heading: Float, boost: Float): List<Bullet> =
             listOf(LaserBullet(origin, heading, min(speed + boost, speed), bounds))
-        } else emptyList()
-    }
 }
 
 class Spread(private val gun: Gun): Gun {
@@ -35,7 +29,6 @@ class Spread(private val gun: Gun): Gun {
         val angleOffset = (Math.PI / 8).toFloat()
 
         val shots = gun.shoot(origin, heading, boost)
-        println(shots)
         return listOf(
                 shots.map { it.copy(heading = it.state.heading + angleOffset) },
                 shots,

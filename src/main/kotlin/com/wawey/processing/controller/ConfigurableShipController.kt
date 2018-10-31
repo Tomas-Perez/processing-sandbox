@@ -17,7 +17,7 @@ class ConfigurableShipController(private val ship: ControllableShip, private val
 
     override fun notifyRight() = ship.applyRotation(0.2f)
 
-    override fun notifyShoot() = ship.startShooting()
+    override fun notifyShoot() = ship.shoot()
 
     override fun register(handler: KeyEventHandler) = with(handler) {
         addObserver(configuration.forwardKey,   object : KeyEventObserver {
