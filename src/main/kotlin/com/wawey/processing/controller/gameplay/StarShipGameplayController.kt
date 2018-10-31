@@ -1,5 +1,6 @@
 package com.wawey.processing.controller.gameplay
 
+import com.wawey.processing.Debounce
 import com.wawey.processing.model.Bounds
 import com.wawey.processing.model.SpawnObserver
 import com.wawey.processing.model.Spawner
@@ -30,8 +31,7 @@ class StarShipGameplayController(
         private val bounds: Bounds): GameplayController {
 
     private var bulletBuffer: List<Bullet> = emptyList()
-    private val timeout = 1000
-    private var lastSpawn = System.currentTimeMillis()
+    private val debounce = Debounce(1000)
 
     private val bulletBufferObserver = object: SpawnObserver<Bullet> {
         override fun notifySpawn(t: Bullet) {
@@ -65,16 +65,14 @@ class StarShipGameplayController(
     }
 
     private fun spawnAsteroids(amount: Int): List<Asteroid> {
-        val current = System.currentTimeMillis()
         val centerVector = Vector2Adapter.vector(bounds.centerX(), bounds.centerY())
-        return if (current - lastSpawn > timeout) {
-            lastSpawn = current
+        return debounce(emptyList()) {
             (0..amount).map {
                 val module = max(bounds.y, bounds.x) / 2f + 200
                 val angle = Math.toRadians((0..360).random().toDouble()).toFloat()
                 val vector = centerVector.add(Vector2Adapter.fromModule(module, angle))
                 asteroidSpawner.spawn(vector.x.toInt(), vector.y.toInt())
             }
-        } else emptyList()
+        }
     }
 }
