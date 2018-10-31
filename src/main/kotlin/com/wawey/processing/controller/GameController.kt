@@ -5,7 +5,8 @@ import com.wawey.processing.controller.gameplay.GameplayController
 import com.wawey.processing.controller.hud.HUDController
 import com.wawey.processing.model.SpawnObserver
 import com.wawey.processing.model.entity.bullet.Bullet
-import com.wawey.processing.model.entity.ship.BaseShipObserver
+import com.wawey.processing.model.entity.ship.PlayerShipObserver
+import com.wawey.processing.model.entity.ship.ShootingObserver
 import com.wawey.processing.model.score.Player
 import com.wawey.processing.model.score.PointScout
 import com.wawey.processing.model.score.PointVisitor
@@ -31,7 +32,7 @@ class GameController(private val gameplayController: GameplayController,
         shipSpawnController.getNew().forEach {
             val newPlayer = Player("Player ${players.size + 1}")
             players.add(newPlayer)
-            val baseObserver = BaseShipObserver().apply {
+            val baseObserver = ShootingObserver().apply {
                 addObserver(object : SpawnObserver<Bullet> {
                     override fun notifySpawn(t: Bullet) {
                         t.addObserver(PointScout(newPlayer, pointVisitor))
@@ -39,6 +40,7 @@ class GameController(private val gameplayController: GameplayController,
                 })
             }
             it.addObserver(baseObserver)
+            it.addObserver(PlayerShipObserver(newPlayer))
             hudController.addPlayer(newPlayer)
             gameplayController.addShip(it)
         }

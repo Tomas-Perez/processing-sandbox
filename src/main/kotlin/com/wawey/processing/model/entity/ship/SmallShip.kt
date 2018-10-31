@@ -69,6 +69,7 @@ class SmallShip(position: Vector2D, private val bounds: Bounds, var gun: Gun): S
 
     override fun hit(damage: Int) {
         state.hp -= damage
+        observers.forEach { it.notifyHit(damage) }
     }
 
     override fun applyAcceleration(a: Float) {

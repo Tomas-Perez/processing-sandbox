@@ -55,7 +55,7 @@ class PGraphicsPlane(private val graphics: PGraphics): Plane {
     }
 
     override fun text(text: String, fontSize: Int, position: Vector2D) {
-        graphics.rectMode(PGraphics.CENTER)
+        graphics.rectMode(PGraphics.CORNER)
         graphics.textSize(fontSize.toFloat())
         withRototraslation(position, ANGLE_OFFSET) {
             graphics.text(

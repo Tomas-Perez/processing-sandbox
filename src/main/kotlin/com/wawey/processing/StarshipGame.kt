@@ -4,23 +4,15 @@ import com.wawey.processing.controller.*
 import com.wawey.processing.controller.event.KeyEventHandler
 import com.wawey.processing.controller.event.MapKeyEventHandler
 import com.wawey.processing.controller.event.ProcessingKeyEventAdapter
-import com.wawey.processing.controller.gameplay.GameplayController
 import com.wawey.processing.controller.gameplay.StarShipGameplayController
 import com.wawey.processing.controller.hud.StarShipHUDController
 import com.wawey.processing.model.*
-import com.wawey.processing.model.entity.bullet.Bullet
-import com.wawey.processing.model.entity.ship.BaseShipObserver
-import com.wawey.processing.model.score.Player
-import com.wawey.processing.model.score.PointScout
-import com.wawey.processing.model.score.PointVisitor
-import com.wawey.processing.model.vector2D.Vector2Adapter
 import com.wawey.processing.view.PGraphicsPlane
 import com.wawey.processing.view.paintor.AsteroidPainter
 import com.wawey.processing.view.paintor.BaseSpawnPainter
 import com.wawey.processing.view.paintor.BulletPainter
 import com.wawey.processing.view.paintor.ShipPainter
 import com.wawey.processing.view.renderer.LayeredRenderer
-import com.wawey.processing.view.score.Scoreboard
 import edu.austral.starship.base.Main
 import edu.austral.starship.base.collision.CollisionEngine
 import edu.austral.starship.base.framework.GameFramework
@@ -40,7 +32,7 @@ class StarshipGame: GameFramework{
     private val adapter: ProcessingKeyEventAdapter = ProcessingKeyEventAdapter(handler)
     private val bounds = Bounds(2560 / 2, 1440 / 2)
     private var lag = 0f
-    private val screenExtra = 200
+    private val screenExtra = 400
     private val gameController = GameController(
             gameplayController = StarShipGameplayController(
                     renderer = LayeredRenderer(),

@@ -7,7 +7,7 @@ import com.wawey.processing.model.Spawner
 import com.wawey.processing.model.World
 import com.wawey.processing.model.entity.asteroid.Asteroid
 import com.wawey.processing.model.entity.bullet.Bullet
-import com.wawey.processing.model.entity.ship.BaseShipObserver
+import com.wawey.processing.model.entity.ship.ShootingObserver
 import com.wawey.processing.model.entity.ship.Ship
 import com.wawey.processing.model.vector2D.Vector2Adapter
 import com.wawey.processing.random
@@ -44,7 +44,7 @@ class StarShipGameplayController(
     }
 
     override fun addShip(s: Ship) {
-        s.addObserver(BaseShipObserver().apply {
+        s.addObserver(ShootingObserver().apply {
             addObserver(bulletSpawnPainter)
             addObserver(bulletBufferObserver)
         })
