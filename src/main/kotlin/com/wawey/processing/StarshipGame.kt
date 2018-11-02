@@ -60,7 +60,9 @@ class StarshipGame: GameFramework{
             val pauseScreen = PauseScreen(
                     bounds = bounds,
                     gameScreen = gameController,
-                    selectConfiguration = defaultControlConfig.selectControl
+                    selectConfiguration = defaultControlConfig.selectControl,
+                    selectKeyName = defaultHUDConfig.selectKeyName,
+                    backKeyName = defaultHUDConfig.backKeyName
             )
 
             GamePausePair(pauseScreen, gameController)
@@ -72,7 +74,8 @@ class StarshipGame: GameFramework{
                 initialScreen = StartScreen(
                         bounds = bounds,
                         selectConfiguration = defaultControlConfig.selectControl,
-                        genGamePausePair = genGamePausePair
+                        genGamePausePair = genGamePausePair,
+                        selectKeyName = defaultHUDConfig.selectKeyName
                 )
         )
     }

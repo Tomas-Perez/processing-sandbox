@@ -13,7 +13,9 @@ import com.wawey.processing.view.Plane
  */
 class PauseScreen(private val bounds: Bounds,
                   private val gameScreen: ScreenController,
-                  private val selectConfiguration: SelectConfiguration): ScreenController {
+                  private val selectConfiguration: SelectConfiguration,
+                  private val selectKeyName: String,
+                  private val backKeyName: String): ScreenController {
     private var observers: List<ControllerCreationObserver> = emptyList()
 
     override fun render(plane: Plane) {
@@ -25,13 +27,13 @@ class PauseScreen(private val bounds: Bounds,
                 centered = true
         )
         plane.text(
-                "Press ENTER to continue",
+                "Press $selectKeyName to continue",
                 30,
                 Vector2Adapter.vector(bounds.centerX(), bounds.centerY() + 75),
                 centered = true
         )
         plane.text(
-                "Press TAB to go to Main Menu",
+                "Press $backKeyName to go to Main Menu",
                 20,
                 Vector2Adapter.vector(bounds.centerX(), bounds.centerY() + 125),
                 centered = true

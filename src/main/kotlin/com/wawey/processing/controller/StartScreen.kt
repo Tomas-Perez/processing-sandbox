@@ -14,7 +14,8 @@ import com.wawey.processing.view.Plane
 
 class StartScreen(private val bounds: Bounds,
                   private val selectConfiguration: SelectConfiguration,
-                  private val genGamePausePair: () -> GamePausePair): ScreenController {
+                  private val genGamePausePair: () -> GamePausePair,
+                  private val selectKeyName: String): ScreenController {
     private var observers: List<ControllerCreationObserver> = emptyList()
 
     override fun render(plane: Plane) {
@@ -26,7 +27,7 @@ class StartScreen(private val bounds: Bounds,
                 centered = true
         )
         plane.text(
-                "Press ENTER to start the game",
+                "Press $selectKeyName to start the game",
                 30,
                 Vector2Adapter.vector(bounds.centerX(), bounds.centerY() + 75),
                 centered = true
