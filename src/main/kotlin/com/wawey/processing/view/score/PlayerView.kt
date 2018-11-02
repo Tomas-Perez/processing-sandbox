@@ -19,7 +19,12 @@ class PlayerView(private val player: Player, private val position: Vector2D, pri
         plane.text(player.name, fontSize, position)
         plane.text("Score: ${player.points}", fontSize, position.add(Vector2Adapter.vector(0, 30)))
         plane.text("HP: ${player.hp}", fontSize, position.add(Vector2Adapter.vector(0, 60)))
-        plane.text("Lives: ${player.lives}", fontSize, position.add(Vector2Adapter.vector(0, 90)))
+        if(player.alive) {
+            plane.text("Lives: ${player.lives}", fontSize, position.add(Vector2Adapter.vector(0, 90)))
+        } else {
+            plane.text("DEAD", fontSize, position.add(Vector2Adapter.vector(0, 90)))
+        }
+
     }
 
     override fun isActive(): Boolean = true

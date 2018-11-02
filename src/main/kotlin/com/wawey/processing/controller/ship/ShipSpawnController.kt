@@ -1,4 +1,4 @@
-package com.wawey.processing.controller
+package com.wawey.processing.controller.ship
 
 import com.wawey.processing.controller.event.KeyEventController
 import com.wawey.processing.model.entity.ship.Ship
@@ -10,4 +10,5 @@ import com.wawey.processing.model.entity.ship.Ship
 interface ShipSpawnController: KeyEventController {
     fun getNew(): List<Ship>
     fun notifySpawnShip()
+    fun respawnShip(s: Ship): Ship?
 }

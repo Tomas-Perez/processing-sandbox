@@ -6,6 +6,7 @@ import com.wawey.processing.controller.event.MapKeyEventHandler
 import com.wawey.processing.controller.event.ProcessingKeyEventAdapter
 import com.wawey.processing.controller.gameplay.StarShipGameplayController
 import com.wawey.processing.controller.hud.StarShipHUDController
+import com.wawey.processing.controller.ship.ConfigurableShipSpawnController
 import com.wawey.processing.model.*
 import com.wawey.processing.view.PGraphicsPlane
 import com.wawey.processing.view.paintor.AsteroidPainter
@@ -33,25 +34,48 @@ class StarshipGame: GameFramework{
     private val bounds = defaultGameplayConfig.bounds
     private var lag = 0f
     private val screenExtra = 400
-    private val gameController = GameController(
-            shipColors = defaultPaintConfig.shipColors,
-            gameplayController = StarShipGameplayController(
-                    renderer = LayeredRenderer(),
-                    world = StarShipWorld(CollisionEngine()),
-                    asteroidSpawner = AsteroidSpawner(bounds),
-                    shipPainter = ShipPainter(),
-                    asteroidSpawnPainter = BaseSpawnPainter(AsteroidPainter()),
-                    bulletSpawnPainter = BaseSpawnPainter(BulletPainter()),
-                    bounds = bounds),
-            hudController = StarShipHUDController(bounds),
-            shipSpawnController = ConfigurableShipSpawnController(
-                    spawnLocations = defaultGameplayConfig.shipSpawnLocations,
-                    shipSpawner = ShipSpawner(bounds),
-                    configuration = defaultControlConfig.shipSpawn,
-                    shipConfigurations = defaultControlConfig.shipControls
-            )
-    ).apply { register(handler) }
+    private val baseController: AnimationController
 
+    init {
+        val genGamePausePair = {
+            val gameController = GameController(
+                shipColors = defaultPaintConfig.shipColors,
+                gameplayController = StarShipGameplayController(
+                        renderer = LayeredRenderer(),
+                        world = StarShipWorld(CollisionEngine()),
+                        asteroidSpawner = AsteroidSpawner(bounds),
+                        shipPainter = ShipPainter(),
+                        asteroidSpawnPainter = BaseSpawnPainter(AsteroidPainter()),
+                        bulletSpawnPainter = BaseSpawnPainter(BulletPainter()),
+                        bounds = bounds),
+                hudController = StarShipHUDController(bounds),
+                shipSpawnController = ConfigurableShipSpawnController(
+                        spawnLocations = defaultGameplayConfig.shipSpawnLocations,
+                        shipSpawner = ShipSpawner(bounds),
+                        configuration = defaultControlConfig.shipSpawn,
+                        shipConfigurations = defaultControlConfig.shipControls
+                )
+            ).apply { register(handler) }
+
+            val pauseScreen = PauseScreen(
+                    bounds = bounds,
+                    gameScreen = gameController,
+                    selectConfiguration = defaultControlConfig.selectControl
+            )
+
+            GamePausePair(pauseScreen, gameController)
+        }
+
+        baseController = BaseController(
+                handler = handler,
+                configuration = defaultControlConfig.baseControl,
+                initialScreen = StartScreen(
+                        bounds = bounds,
+                        selectConfiguration = defaultControlConfig.selectControl,
+                        genGamePausePair = genGamePausePair
+                )
+        )
+    }
 
     override fun setup(windowsSettings: WindowSettings, imageLoader: ImageLoader) {
         windowsSettings
@@ -70,10 +94,10 @@ class StarshipGame: GameFramework{
         adapter.notifyHandler()
         lag += timeToMS(timeSinceLastDraw)
         while (lag > MS_PER_UPDATE) {
-            gameController.update()
+            baseController.update()
             lag -= MS_PER_UPDATE
         }
-        gameController.render(plane)
+        baseController.render(plane)
     }
 
     private fun timeToMS(time: Float) = (100f / time) * (1f/60f) * 1000f

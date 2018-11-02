@@ -10,6 +10,7 @@ import com.wawey.processing.model.entity.ship.Ship
 import com.wawey.processing.model.entity.ship.SmallShip
 import com.wawey.processing.model.vector2D.Vector2Adapter
 import com.wawey.processing.random
+import java.util.*
 
 /**
  *
@@ -17,13 +18,17 @@ import com.wawey.processing.random
  */
 interface Spawner<T>: Observable<SpawnObserver<T>> {
     fun spawn(x: Int, y: Int): T
+    fun respawn(t: T, x: Int, y: Int): T
 }
 
 class ShipSpawner(private val bounds: Bounds): Spawner<Ship> {
     private val observers: MutableList<SpawnObserver<Ship>> = mutableListOf()
 
     override fun spawn(x: Int, y: Int): Ship =
-            SmallShip(Vector2Adapter.vector(x,y), bounds, Laser(bounds)).also { s -> observers.forEach { it.notifySpawn(s) } }
+            SmallShip(UUID.randomUUID(), Vector2Adapter.vector(x,y), bounds, Laser(bounds)).also { s -> observers.forEach { it.notifySpawn(s) } }
+
+    override fun respawn(t: Ship, x: Int, y: Int): Ship  =
+            SmallShip(t.id, Vector2Adapter.vector(x,y), bounds, Laser(bounds)).also { s -> observers.forEach { it.notifySpawn(s) } }
 
     override fun addObserver(o: SpawnObserver<Ship>) {
         observers.add(o)
@@ -48,6 +53,8 @@ class AsteroidSpawner(private val bounds: Bounds): Spawner<Asteroid> {
                 bounds = bounds
         ).also { a -> observers.forEach { it.notifySpawn(a) } }
     }
+
+    override fun respawn(t: Asteroid, x: Int, y: Int): Asteroid = spawn(x, y)
 
     override fun addObserver(o: SpawnObserver<Asteroid>) {
         observers.add(o)

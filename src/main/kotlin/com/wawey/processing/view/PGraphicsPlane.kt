@@ -54,8 +54,12 @@ class PGraphicsPlane(private val graphics: PGraphics): Plane {
         graphics.stroke(drawColors.border.rgb)
     }
 
-    override fun text(text: String, fontSize: Int, position: Vector2D) {
-        graphics.rectMode(PGraphics.CORNER)
+    override fun text(text: String, fontSize: Int, position: Vector2D, centered: Boolean) {
+        if(centered) {
+            graphics.textAlign(PGraphics.CENTER, PGraphics.CENTER)
+        } else {
+            graphics.textAlign(PGraphics.BASELINE, PGraphics.BASELINE)
+        }
         graphics.textSize(fontSize.toFloat())
         withRototraslation(position, ANGLE_OFFSET) {
             graphics.text(

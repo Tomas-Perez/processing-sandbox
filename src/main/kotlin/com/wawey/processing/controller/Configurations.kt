@@ -16,3 +16,11 @@ data class ShipControllerConfiguration(
 data class ShipSpawnControllerConfiguration(
         val spawnKey: Int
 )
+
+data class BaseControllerConfiguration(
+        val backKey: Int
+)
+
+data class SelectConfiguration(
+        val selectKey: Int
+)

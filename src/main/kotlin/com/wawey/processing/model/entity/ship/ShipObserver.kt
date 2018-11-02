@@ -1,9 +1,8 @@
 package com.wawey.processing.model.entity.ship
 
-import com.wawey.processing.model.entity.Observable
 import com.wawey.processing.model.SpawnObserver
+import com.wawey.processing.model.entity.Observable
 import com.wawey.processing.model.entity.bullet.Bullet
-import com.wawey.processing.model.score.Player
 
 /**
  *
@@ -12,6 +11,7 @@ import com.wawey.processing.model.score.Player
 interface ShipObserver {
     fun notifyShoot(bullets: List<Bullet>)
     fun notifyHit(damage: Int)
+    fun notifyDestroy()
 }
 
 class ShootingObserver: ShipObserver, Observable<SpawnObserver<Bullet>> {
@@ -20,6 +20,8 @@ class ShootingObserver: ShipObserver, Observable<SpawnObserver<Bullet>> {
     override fun notifyShoot(bullets: List<Bullet>) {
         observers.forEach { o -> bullets.forEach { o.notifySpawn(it) }  }
     }
+
+    override fun notifyDestroy() = Unit
 
     override fun notifyHit(damage: Int) = Unit
 

@@ -1,5 +1,6 @@
-package com.wawey.processing.controller
+package com.wawey.processing.controller.ship
 
+import com.wawey.processing.controller.ShipControllerConfiguration
 import com.wawey.processing.controller.event.KeyEventHandler
 import com.wawey.processing.controller.event.KeyEventObserver
 import com.wawey.processing.model.entity.ControllableShip
@@ -8,7 +9,7 @@ import com.wawey.processing.model.entity.ControllableShip
  *
  * @author Tomas Perez Molina
  */
-class ConfigurableShipController(private val ship: ControllableShip, private val configuration: ShipControllerConfiguration): ShipController {
+class ConfigurableShipController(override var ship: ControllableShip, private val configuration: ShipControllerConfiguration): ShipController {
     override fun notifyBackward() = ship.applyAcceleration(2f)
 
     override fun notifyForward() = ship.applyAcceleration(-2f)

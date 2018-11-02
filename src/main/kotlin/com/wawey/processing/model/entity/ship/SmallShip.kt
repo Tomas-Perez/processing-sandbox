@@ -6,12 +6,13 @@ import com.wawey.processing.model.entity.gun.Gun
 import com.wawey.processing.model.vector2D.Vector2Adapter
 import com.wawey.processing.model.vector2D.Vector2D
 import java.awt.Polygon
+import java.util.*
 
 /**
  *
  * @author Tomas Perez Molina
  */
-class SmallShip(position: Vector2D, private val bounds: Bounds, var gun: Gun): Ship {
+class SmallShip(override val id: UUID, position: Vector2D, private val bounds: Bounds, var gun: Gun): Ship {
 
     private val observers: MutableList<ShipObserver> = mutableListOf()
 
@@ -28,10 +29,7 @@ class SmallShip(position: Vector2D, private val bounds: Bounds, var gun: Gun): S
     )
 
     override fun update() = with(state) {
-        if (hp <= 0) {
-            destroyed = true
-            return
-        }
+        if (destroyed) return
         speed += acceleration
         acceleration = 0f
         heading += rotation
@@ -69,6 +67,10 @@ class SmallShip(position: Vector2D, private val bounds: Bounds, var gun: Gun): S
 
     override fun hit(damage: Int) {
         state.hp -= damage
+        if (state.hp <= 0) {
+            state.destroyed = true
+            observers.forEach { it.notifyDestroy() }
+        }
         observers.forEach { it.notifyHit(damage) }
     }
 
@@ -91,4 +93,25 @@ class SmallShip(position: Vector2D, private val bounds: Bounds, var gun: Gun): S
     override fun removeObserver(o: ShipObserver) {
         observers.remove(o)
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as SmallShip
+
+        if (id != other.id) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
+    }
+
+    override fun toString(): String {
+        return "SmallShip(id=$id)"
+    }
+
+
 }

@@ -1,6 +1,8 @@
-package com.wawey.processing.controller
+package com.wawey.processing.controller.ship
 
 import com.wawey.processing.Debounce
+import com.wawey.processing.controller.ShipControllerConfiguration
+import com.wawey.processing.controller.ShipSpawnControllerConfiguration
 import com.wawey.processing.controller.event.KeyEventHandler
 import com.wawey.processing.controller.event.KeyEventObserver
 import com.wawey.processing.model.Spawner
@@ -40,11 +42,27 @@ class ConfigurableShipSpawnController(
         }
     }
 
+    override fun respawnShip(s: Ship): Ship? {
+        val handler = this.handler
+        if (handler != null) {
+            val oldController = shipControllers.firstOrNull { it.ship === s }
+            if (oldController != null) {
+                val position = spawnLocations.shuffled().first { it != lastLocation }
+                lastLocation = position
+                val ship = shipSpawner.respawn(s, position.x.toInt(), position.y.toInt())
+                oldController.ship = ship
+                return ship
+            }
+        }
+        return null
+    }
+
     override fun register(handler: KeyEventHandler) {
         this.handler = handler
         handler.addObserver(configuration.spawnKey, object : KeyEventObserver {
             override fun notifyKeyPressed() = notifySpawnShip()
         })
+        shipControllers.forEach { it.register(handler) }
     }
 
     override fun deregister(handler: KeyEventHandler) {

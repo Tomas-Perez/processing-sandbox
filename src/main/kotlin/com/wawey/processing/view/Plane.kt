@@ -13,7 +13,7 @@ interface Plane {
     fun rectangle(width: Int, height: Int, position: Vector2D, angle: Float)
     fun polygon(points: List<Vector2D>, position: Vector2D, angle: Float)
     fun setDrawColors(drawColors: DrawColors)
-    fun text(text: String, fontSize: Int, position: Vector2D)
+    fun text(text: String, fontSize: Int, position: Vector2D, centered: Boolean = false)
 
     //New
     val width: Int
