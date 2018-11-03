@@ -10,13 +10,16 @@ import com.wawey.processing.model.entity.ControllableShip
  * @author Tomas Perez Molina
  */
 class ConfigurableShipController(override var ship: ControllableShip, private val configuration: ShipControllerConfiguration): ShipController {
-    override fun notifyBackward() = ship.applyAcceleration(2f)
+    private val acceleration = 1.8f
+    private val rotation = 0.15f
 
-    override fun notifyForward() = ship.applyAcceleration(-2f)
+    override fun notifyBackward() = ship.applyAcceleration(acceleration)
 
-    override fun notifyLeft() = ship.applyRotation(-0.2f)
+    override fun notifyForward() = ship.applyAcceleration(-acceleration)
 
-    override fun notifyRight() = ship.applyRotation(0.2f)
+    override fun notifyRight() = ship.applyRotation(rotation)
+
+    override fun notifyLeft() = ship.applyRotation(-rotation)
 
     override fun notifyShoot() = ship.shoot()
 
