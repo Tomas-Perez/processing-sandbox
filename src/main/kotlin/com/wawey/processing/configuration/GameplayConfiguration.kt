@@ -1,4 +1,4 @@
-package com.wawey.processing
+package com.wawey.processing.configuration
 
 import com.wawey.processing.model.Bounds
 import com.wawey.processing.model.vector2D.Vector2Adapter
@@ -13,10 +13,10 @@ data class GameplayConfiguration(
         val shipSpawnLocations: List<Vector2D>
 )
 
-private val bounds = Bounds(2560/2, 1440/2)
+private val bounds = Bounds(1920, 1080)
 
-private val xCoords = listOf(0, bounds.x, bounds.centerX())
-private val yCoords = listOf(0, bounds.y, bounds.centerY())
+private val xCoords = listOf(100, bounds.x - 100, bounds.centerX())
+private val yCoords = listOf(100, bounds.y - 100, bounds.centerY())
 
 private val spawnLocations =
         xCoords.map {

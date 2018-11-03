@@ -34,7 +34,7 @@ class PowerUpPainter: Painter<PowerUp>, PowerUpVisitor<Drawable> {
 
     override fun draw(t: PowerUp, color: Color): Drawable {
         currentColor = color
-        return t.accept(this)
+        return BlinkingPowerUpView(t.state, t.accept(this))
     }
 
     override fun visit(doubleShot: DoubleShotPowerUp): Drawable =

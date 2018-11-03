@@ -1,5 +1,6 @@
 package com.wawey.processing
 
+import com.wawey.processing.configuration.*
 import com.wawey.processing.controller.*
 import com.wawey.processing.controller.event.KeyEventHandler
 import com.wawey.processing.controller.event.MapKeyEventHandler
@@ -7,7 +8,8 @@ import com.wawey.processing.controller.event.ProcessingKeyEventAdapter
 import com.wawey.processing.controller.gameplay.StarShipGameplayController
 import com.wawey.processing.controller.hud.StarShipHUDController
 import com.wawey.processing.controller.ship.ConfigurableShipSpawnController
-import com.wawey.processing.model.*
+import com.wawey.processing.model.Bounds
+import com.wawey.processing.model.StarShipWorld
 import com.wawey.processing.model.spawner.*
 import com.wawey.processing.view.PGraphicsPlane
 import com.wawey.processing.view.paintor.*
@@ -24,7 +26,6 @@ import processing.event.KeyEvent
  *
  * @author Tomas Perez Molina
  */
-typealias JavaKeyEvent = java.awt.event.KeyEvent
 
 class StarshipGame: GameFramework{
     private val handler: KeyEventHandler = MapKeyEventHandler()
@@ -35,6 +36,7 @@ class StarshipGame: GameFramework{
     private val baseController: AnimationController
 
     init {
+        val controlConfig = INIControlConfigurator("conf.ini", defaultControlConfig).controlConfiguration
         val genGamePausePair = {
             val gameController = GameController(
                 shipColors = defaultPaintConfig.shipColors,
@@ -58,8 +60,8 @@ class StarshipGame: GameFramework{
                 shipSpawnController = ConfigurableShipSpawnController(
                         spawnLocations = defaultGameplayConfig.shipSpawnLocations,
                         shipSpawner = SmallShipSpawner(bounds),
-                        configuration = defaultControlConfig.shipSpawn,
-                        shipConfigurations = defaultControlConfig.shipControls
+                        configuration = controlConfig.shipSpawn,
+                        shipConfigurations = controlConfig.shipControls
                 )
             ).apply { register(handler) }
 
@@ -76,10 +78,10 @@ class StarshipGame: GameFramework{
 
         baseController = BaseController(
                 handler = handler,
-                configuration = defaultControlConfig.baseControl,
+                configuration = controlConfig.baseControl,
                 initialScreen = StartScreen(
                         bounds = screenBounds,
-                        selectConfiguration = defaultControlConfig.selectControl,
+                        selectConfiguration = controlConfig.selectControl,
                         genGamePausePair = genGamePausePair,
                         selectKeyName = defaultHUDConfig.selectKeyName
                 )

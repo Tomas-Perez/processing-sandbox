@@ -4,7 +4,7 @@ import com.wawey.processing.model.Bounds
 import com.wawey.processing.model.entity.GameEntity
 import com.wawey.processing.model.vector2D.Vector2Adapter
 import com.wawey.processing.model.vector2D.Vector2D
-import com.wawey.processing.random
+import com.wawey.processing.util.random
 import java.awt.Polygon
 import java.awt.Shape
 

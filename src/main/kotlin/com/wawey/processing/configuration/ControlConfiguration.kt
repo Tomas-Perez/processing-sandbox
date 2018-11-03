@@ -1,4 +1,4 @@
-package com.wawey.processing
+package com.wawey.processing.configuration
 
 import com.wawey.processing.controller.BaseControllerConfiguration
 import com.wawey.processing.controller.SelectConfiguration
@@ -9,6 +9,8 @@ import com.wawey.processing.controller.ShipSpawnControllerConfiguration
  *
  * @author Tomas Perez Molina
  */
+typealias JavaKeyEvent = java.awt.event.KeyEvent
+
 data class ControlConfiguration(
         val shipSpawn: ShipSpawnControllerConfiguration,
         val shipControls: List<ShipControllerConfiguration>,

@@ -1,4 +1,4 @@
-package com.wawey.processing
+package com.wawey.processing.configuration
 
 /**
  *
@@ -11,6 +11,6 @@ data class HUDConfiguration(
 )
 
 val defaultHUDConfig = HUDConfiguration(
-        backKeyName = "TAB",
-        selectKeyName = "ENTER"
+        backKeyName = "BACK",
+        selectKeyName = "SELECT"
 )

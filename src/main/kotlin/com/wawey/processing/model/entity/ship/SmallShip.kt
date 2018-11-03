@@ -1,6 +1,6 @@
 package com.wawey.processing.model.entity.ship
 
-import com.wawey.processing.Cooldown
+import com.wawey.processing.util.Cooldown
 import com.wawey.processing.model.Bounds
 import com.wawey.processing.model.entity.gun.Gun
 import com.wawey.processing.model.vector2D.Vector2Adapter

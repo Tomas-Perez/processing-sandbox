@@ -1,6 +1,6 @@
 package com.wawey.processing.controller.gameplay
 
-import com.wawey.processing.Cooldown
+import com.wawey.processing.util.Cooldown
 import com.wawey.processing.model.Bounds
 import com.wawey.processing.model.spawner.SpawnObserver
 import com.wawey.processing.model.spawner.Spawner
@@ -11,7 +11,7 @@ import com.wawey.processing.model.entity.powerup.PowerUp
 import com.wawey.processing.model.entity.ship.ShootingObserver
 import com.wawey.processing.model.entity.ship.Ship
 import com.wawey.processing.model.vector2D.Vector2Adapter
-import com.wawey.processing.random
+import com.wawey.processing.util.random
 import com.wawey.processing.view.Plane
 import com.wawey.processing.view.paintor.Painter
 import com.wawey.processing.view.paintor.SpawnPainter

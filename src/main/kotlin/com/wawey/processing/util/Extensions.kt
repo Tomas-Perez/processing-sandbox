@@ -1,9 +1,11 @@
-package com.wawey.processing
+package com.wawey.processing.util
 
+import com.wawey.processing.configuration.ConfigException
 import com.wawey.processing.model.vector2D.Vector2Adapter
 import com.wawey.processing.model.vector2D.Vector2D
 import java.awt.Shape
 import java.awt.geom.PathIterator
+import java.lang.Exception
 import kotlin.random.Random
 
 /**
@@ -41,3 +43,10 @@ fun Shape.getPoints(): List<Vector2D> {
     throw IllegalArgumentException("Unclosed path")
 }
 
+fun <T> tryOrDefault(default: T, func: () -> T): T =
+        try {
+            func()
+        } catch (exc: Exception) {
+            println(exc.message)
+            default
+        }

@@ -1,6 +1,6 @@
 package com.wawey.processing.controller.ship
 
-import com.wawey.processing.Cooldown
+import com.wawey.processing.util.Cooldown
 import com.wawey.processing.controller.ShipControllerConfiguration
 import com.wawey.processing.controller.ShipSpawnControllerConfiguration
 import com.wawey.processing.controller.event.KeyEventHandler

@@ -1,11 +1,11 @@
 package com.wawey.processing.model.spawner
 
-import com.wawey.processing.mapTo
+import com.wawey.processing.util.mapTo
 import com.wawey.processing.model.Bounds
 import com.wawey.processing.model.entity.asteroid.Asteroid
 import com.wawey.processing.model.entity.asteroid.CommonAsteroid
 import com.wawey.processing.model.vector2D.Vector2Adapter
-import com.wawey.processing.random
+import com.wawey.processing.util.random
 
 /**
  *

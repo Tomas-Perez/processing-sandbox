@@ -1,4 +1,4 @@
-package com.wawey.processing
+package com.wawey.processing.configuration
 
 import java.awt.Color
 

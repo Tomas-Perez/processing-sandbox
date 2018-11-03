@@ -1,6 +1,6 @@
 package com.wawey.processing.view.model
 
-import com.wawey.processing.getPoints
+import com.wawey.processing.util.getPoints
 import com.wawey.processing.model.entity.asteroid.AsteroidState
 import com.wawey.processing.view.DrawColors
 import com.wawey.processing.view.Drawable

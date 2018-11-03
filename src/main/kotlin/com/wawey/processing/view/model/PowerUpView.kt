@@ -1,6 +1,6 @@
 package com.wawey.processing.view.model
 
-import com.wawey.processing.getPoints
+import com.wawey.processing.util.getPoints
 import com.wawey.processing.model.entity.powerup.PowerUpState
 import com.wawey.processing.model.vector2D.Vector2Adapter
 import com.wawey.processing.view.DrawColors
@@ -53,4 +53,27 @@ class DoubleDamageView(shape: Shape, private val state: PowerUpState, private va
     }
 
     override fun isActive(): Boolean = !state.destroyed
+}
+
+class BlinkingPowerUpView(private val powerUpState: PowerUpState, private val powerUpView: Drawable): Drawable {
+    private val blinkTime = 20
+    private var currentBlinkTime = 0
+
+    override fun draw(plane: Plane) {
+        var draw = true
+        if (powerUpState.timeLeft < 120) {
+            currentBlinkTime++
+            if (currentBlinkTime >= blinkTime) {
+                draw = false
+            }
+            if (currentBlinkTime >= blinkTime * 2) {
+                currentBlinkTime = 0
+            }
+        }
+        if (draw) {
+            powerUpView.draw(plane)
+        }
+    }
+
+    override fun isActive(): Boolean = powerUpView.isActive()
 }

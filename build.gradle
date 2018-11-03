@@ -16,6 +16,7 @@ repositories {
 dependencies {
     compile group: 'org.processing', name: 'core', version: '3.3.7'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compile group: 'org.ini4j', name: 'ini4j', version: '0.5.4'
 
     testCompile group: 'org.assertj', name: 'assertj-core', version: '3.8.0'
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.1'

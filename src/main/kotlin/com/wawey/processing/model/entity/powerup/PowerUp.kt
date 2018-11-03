@@ -35,5 +35,5 @@ data class PowerUpState(
         override var position: Vector2D = Vector2Adapter.vector(0, 0),
         override var heading: Float = (Math.PI / 2).toFloat(),
         override var destroyed: Boolean = false,
-        var timeLeft: Int = 6000
+        var timeLeft: Int = 1000
 ): EntityState
