@@ -16,7 +16,7 @@ class StartScreen(private val bounds: Bounds,
                   private val selectConfiguration: SelectConfiguration,
                   private val genGamePausePair: () -> GamePausePair,
                   private val selectKeyName: String): ScreenController {
-    private var observers: List<ControllerCreationObserver> = emptyList()
+    private var routers: List<ControllerRouter> = emptyList()
 
     override fun render(plane: Plane) {
         plane.setDrawColors(DrawColors())
@@ -40,9 +40,9 @@ class StartScreen(private val bounds: Bounds,
         handler.addObserver(selectConfiguration.selectKey, object : KeyEventObserver {
             override fun notifyKeyPressed() {
                 val pair = genGamePausePair()
-                observers.forEach {
-                    it.notifyNewController(pair.pauseScreen)
-                    it.notifyNewController(pair.gameScreen)
+                routers.forEach {
+                    it.newController(pair.pauseScreen)
+                    it.newController(pair.gameScreen)
                 }
             }
         })
@@ -52,12 +52,12 @@ class StartScreen(private val bounds: Bounds,
         handler.removeObserver(selectConfiguration.selectKey)
     }
 
-    override fun addObserver(o: ControllerCreationObserver) {
-        observers = observers.plus(o)
+    override fun addObserver(o: ControllerRouter) {
+        routers = routers.plus(o)
     }
 
-    override fun removeObserver(o: ControllerCreationObserver) {
-        observers = observers.minus(o)
+    override fun removeObserver(o: ControllerRouter) {
+        routers = routers.minus(o)
     }
 }
 

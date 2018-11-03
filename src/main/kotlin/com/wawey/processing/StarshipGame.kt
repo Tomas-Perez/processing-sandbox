@@ -39,6 +39,7 @@ class StarshipGame: GameFramework{
         val controlConfig = INIControlConfigurator("conf.ini", defaultControlConfig).controlConfiguration
         val genGamePausePair = {
             val gameController = GameController(
+                gameOverScreenGen = {p -> GameOverScreen(screenBounds, defaultHUDConfig.backKeyName, p)},
                 shipColors = defaultPaintConfig.shipColors,
                 gameplayController = StarShipGameplayController(
                         renderer = LayeredRenderer(),

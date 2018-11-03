@@ -11,20 +11,20 @@ import java.util.*
  *
  * @author Tomas Perez Molina
  */
-class BaseController(private val handler: KeyEventHandler, initialScreen: ScreenController, configuration: BaseControllerConfiguration): GeneralController, ControllerCreationObserver, AnimationController {
+class BaseController(private val handler: KeyEventHandler, initialScreen: ScreenController, configuration: BaseControllerConfiguration): ControllerRouter, AnimationController {
     private val controllers: Stack<ScreenController> = Stack()
     private val debounce = Cooldown(200)
 
     init {
-        notifyNewController(initialScreen)
+        newController(initialScreen)
         handler.addObserver(configuration.backKey, object : KeyEventObserver {
             override fun notifyKeyPressed() = debounce {
-                notifyBack()
+                back()
             }
         })
     }
 
-    override fun notifyBack() {
+    override fun back() {
         if(controllers.size > 1) {
             val oldController = controllers.pop()
             oldController.deregister(handler)
@@ -35,7 +35,7 @@ class BaseController(private val handler: KeyEventHandler, initialScreen: Screen
         }
     }
 
-    override fun notifyNewController(s: ScreenController) {
+    override fun newController(s: ScreenController) {
         if(controllers.size >= 1) {
             val current = controllers.peek()
             current.removeObserver(this)
@@ -46,16 +46,17 @@ class BaseController(private val handler: KeyEventHandler, initialScreen: Screen
         controllers.push(s)
     }
 
+    override fun goToStart() {
+        while (controllers.size > 1) back()
+    }
+
     override fun render(plane: Plane) = controllers.peek().render(plane)
 
     override fun update() = controllers.peek().update()
 }
 
-
-interface GeneralController {
-    fun notifyBack()
-}
-
-interface ControllerCreationObserver {
-    fun notifyNewController(s: ScreenController)
+interface ControllerRouter {
+    fun newController(s: ScreenController)
+    fun goToStart()
+    fun back()
 }

@@ -3,6 +3,7 @@ package com.wawey.processing.controller
 import com.wawey.processing.controller.event.KeyEventHandler
 import com.wawey.processing.controller.event.KeyEventObserver
 import com.wawey.processing.model.Bounds
+import com.wawey.processing.model.score.Player
 import com.wawey.processing.model.vector2D.Vector2Adapter
 import com.wawey.processing.view.DrawColors
 import com.wawey.processing.view.Plane
@@ -11,23 +12,21 @@ import com.wawey.processing.view.Plane
  *
  * @author Tomas Perez Molina
  */
-class PauseScreen(private val bounds: Bounds,
-                  private val gameScreen: ScreenController,
-                  private val selectConfiguration: SelectConfiguration,
-                  private val selectKeyName: String,
-                  private val backKeyName: String): ScreenController {
+class GameOverScreen(private val bounds: Bounds,
+                     private val backKeyName: String,
+                     private val highScorePlayer: Player): ScreenController {
     private var routers: List<ControllerRouter> = emptyList()
 
     override fun render(plane: Plane) {
         plane.setDrawColors(DrawColors())
         plane.text(
-                "PAUSED",
+                "${highScorePlayer.name} WINS",
                 50,
                 Vector2Adapter.vector(bounds.centerX(), bounds.centerY()),
                 centered = true
         )
         plane.text(
-                "Press $selectKeyName to continue",
+                "Score: ${highScorePlayer.points}",
                 30,
                 Vector2Adapter.vector(bounds.centerX(), bounds.centerY() + 75),
                 centered = true
@@ -42,15 +41,9 @@ class PauseScreen(private val bounds: Bounds,
 
     override fun update() = Unit
 
-    override fun register(handler: KeyEventHandler) {
-        handler.addObserver(selectConfiguration.selectKey, object : KeyEventObserver {
-            override fun notifyKeyPressed() = routers.forEach { it.newController(gameScreen) }
-        })
-    }
+    override fun register(handler: KeyEventHandler) = Unit
 
-    override fun deregister(handler: KeyEventHandler) {
-        handler.removeObserver(selectConfiguration.selectKey)
-    }
+    override fun deregister(handler: KeyEventHandler) = Unit
 
     override fun addObserver(o: ControllerRouter) {
         routers = routers.plus(o)

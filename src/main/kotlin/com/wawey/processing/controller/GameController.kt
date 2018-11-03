@@ -24,12 +24,15 @@ import java.util.*
 class GameController(private val gameplayController: GameplayController,
                      private val hudController: HUDController,
                      private val shipSpawnController: ShipSpawnController,
+                     private val gameOverScreenGen: (Player) -> GameOverScreen,
                      private val shipColors: List<Color>): ScreenController {
 
+    private var routers: List<ControllerRouter> = emptyList()
     private val playerShips = mutableMapOf<UUID, Player>()
     private val pointVisitor = HitVisitor()
     private val destroyVisitor = DestroyVisitor()
     private var respawnedShips = emptyList<Ship>()
+    private var gameStarted = false
 
     override fun render(plane: Plane) {
         gameplayController.render(plane)
@@ -37,7 +40,15 @@ class GameController(private val gameplayController: GameplayController,
     }
 
     override fun update() {
+        if (playerShips.filter { it.value.alive }.isEmpty() && gameStarted) {
+            routers.forEach {
+                it.goToStart()
+                val highScorePlayer = playerShips.values.sortedBy { p -> -p.points }.first()
+                it.newController(gameOverScreenGen(highScorePlayer))
+            }
+        }
         shipSpawnController.getNew().forEach {
+            gameStarted = true
             val newPlayer = Player(playerShips.size, "Player ${playerShips.size + 1}")
             registerShip(newPlayer, it)
             gameplayController.addShip(it, shipColors[playerShips.size])
@@ -46,7 +57,7 @@ class GameController(private val gameplayController: GameplayController,
         }
         respawnedShips.forEach {
             val player = playerShips[it.id]
-            if(player != null && player.alive) {
+            if (player != null && player.alive) {
                 registerShip(player, it)
                 gameplayController.addShip(it, shipColors[player.number])
             }
@@ -58,7 +69,7 @@ class GameController(private val gameplayController: GameplayController,
 
     private fun respawn(s: Ship) {
         val newShip = shipSpawnController.respawnShip(s)
-        if(newShip != null) {
+        if (newShip != null) {
             respawnedShips = respawnedShips.plus(newShip)
         }
     }
@@ -88,7 +99,11 @@ class GameController(private val gameplayController: GameplayController,
         shipSpawnController.deregister(handler)
     }
 
-    override fun addObserver(o: ControllerCreationObserver) = Unit
+    override fun addObserver(o: ControllerRouter) {
+        routers = routers.plus(o)
+    }
 
-    override fun removeObserver(o: ControllerCreationObserver) = Unit
+    override fun removeObserver(o: ControllerRouter) {
+        routers = routers.minus(o)
+    }
 }
