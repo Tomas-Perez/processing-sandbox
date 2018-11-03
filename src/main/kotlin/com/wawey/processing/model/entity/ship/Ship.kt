@@ -23,5 +23,6 @@ data class ShipState(
         override var destroyed: Boolean = false,
         var speed: Float = 0f,
         var hp: Int = 100,
-        var shooting: Boolean = false
+        var shooting: Boolean = false,
+        var invincible: Boolean = false
 ): EntityState

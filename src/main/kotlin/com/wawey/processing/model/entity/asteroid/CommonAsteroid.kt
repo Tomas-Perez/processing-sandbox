@@ -40,8 +40,9 @@ class CommonAsteroid(val size: Int, position: Vector2D, heading: Float, speed: F
         }
     }
 
-    override fun hit(damage: Int) {
+    override fun hit(damage: Int): Boolean {
         state.hp -= damage
+        return true
     }
 
     companion object {

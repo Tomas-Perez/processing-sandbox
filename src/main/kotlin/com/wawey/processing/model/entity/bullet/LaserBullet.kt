@@ -29,11 +29,11 @@ class LaserBullet(position: Vector2D, heading: Float, speed: Float, private val 
         }
     }
 
-    override fun hit(damage: Int) = Unit
+    override fun hit(damage: Int) = false
 
     override fun hit(entity: GameEntity) {
-        entity.hit(100)
-        observers.forEach { it.notifyHit(entity) }
+        val hit = entity.hit(50)
+        if (hit) observers.forEach { it.notifyHit(entity) }
     }
 
     override fun addObserver(o: BulletObserver) {

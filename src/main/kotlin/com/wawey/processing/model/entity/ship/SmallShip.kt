@@ -16,11 +16,13 @@ class SmallShip(override val id: UUID, position: Vector2D, private val bounds: B
 
     private val observers: MutableList<ShipObserver> = mutableListOf()
 
-    override val state = ShipState(position = position)
+    override val state = ShipState(position = position, invincible = true)
     override val collider = ShipCollider(this)
     private var acceleration = 0f
     private var rotation = 0f
     private val debounce = Debounce(500)
+    private val invincibleTime = 60
+    private var invincibilityCounter = 0
 
     override val shape = Polygon(
             intArrayOf(-30, 0, 30, 0, -30),
@@ -30,6 +32,13 @@ class SmallShip(override val id: UUID, position: Vector2D, private val bounds: B
 
     override fun update() = with(state) {
         if (destroyed) return
+        if (invincible) {
+            invincibilityCounter++
+        }
+        if (invincibilityCounter >= invincibleTime) {
+            invincibilityCounter = 0
+            invincible = false
+        }
         speed += acceleration
         acceleration = 0f
         heading += rotation
@@ -62,16 +71,21 @@ class SmallShip(override val id: UUID, position: Vector2D, private val bounds: B
             adjustedY = bounds.y.toFloat()
         }
 
-        position = Vector2Adapter.vector(adjustedX, adjustedY)
-    }
-
-    override fun hit(damage: Int) {
-        state.hp -= damage
-        if (state.hp <= 0) {
-            state.destroyed = true
-            observers.forEach { it.notifyDestroy() }
+            position = Vector2Adapter.vector(adjustedX, adjustedY)
         }
-        observers.forEach { it.notifyHit(damage) }
+
+        override fun hit(damage: Int): Boolean = with(state){
+            if(!invincible) {
+                hp -= damage
+                observers.forEach { it.notifyHit(damage) }
+                if (hp <= 0) {
+                    destroyed = true
+                    observers.forEach { it.notifyDestroy() }
+                }
+            invincible = true
+            return@with true
+        }
+        return@with false
     }
 
     override fun applyAcceleration(a: Float) {

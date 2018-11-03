@@ -14,7 +14,7 @@ interface GameEntity {
 
     fun <R> accept(entityVisitor: EntityVisitor<R>): R
     fun update()
-    fun hit(damage: Int)
+    fun hit(damage: Int): Boolean
 }
 
 interface EntityState {

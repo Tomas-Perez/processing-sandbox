@@ -14,10 +14,24 @@ import java.awt.Shape
  */
 class ShipView(shape: Shape, private val state: ShipState, private val color: Color): Drawable {
     private val points = shape.getPoints()
+    private val blinkTime = 20
+    private var currentBlinkTime = 0
 
     override fun draw(plane: Plane) {
-        plane.setDrawColors(DrawColors(border = color, borderWidth = 5))
-        plane.polygon(points, state.position, state.heading)
+        var draw = true
+        if (state.invincible) {
+            currentBlinkTime++
+            if (currentBlinkTime >= blinkTime) {
+                draw = false
+            }
+            if (currentBlinkTime >= blinkTime * 2) {
+                currentBlinkTime = 0
+            }
+        }
+        if (draw) {
+            plane.setDrawColors(DrawColors(border = color, borderWidth = 5))
+            plane.polygon(points, state.position, state.heading)
+        }
     }
 
     override fun isActive(): Boolean = !state.destroyed
