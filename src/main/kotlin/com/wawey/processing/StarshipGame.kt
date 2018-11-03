@@ -8,11 +8,9 @@ import com.wawey.processing.controller.gameplay.StarShipGameplayController
 import com.wawey.processing.controller.hud.StarShipHUDController
 import com.wawey.processing.controller.ship.ConfigurableShipSpawnController
 import com.wawey.processing.model.*
+import com.wawey.processing.model.spawner.*
 import com.wawey.processing.view.PGraphicsPlane
-import com.wawey.processing.view.paintor.AsteroidPainter
-import com.wawey.processing.view.paintor.BaseSpawnPainter
-import com.wawey.processing.view.paintor.BulletPainter
-import com.wawey.processing.view.paintor.ShipPainter
+import com.wawey.processing.view.paintor.*
 import com.wawey.processing.view.renderer.LayeredRenderer
 import edu.austral.starship.base.Main
 import edu.austral.starship.base.collision.CollisionEngine
@@ -32,8 +30,8 @@ class StarshipGame: GameFramework{
     private val handler: KeyEventHandler = MapKeyEventHandler()
     private val adapter: ProcessingKeyEventAdapter = ProcessingKeyEventAdapter(handler)
     private val bounds = defaultGameplayConfig.bounds
+    private val screenBounds = Bounds(bounds.x, bounds.y + 200)
     private var lag = 0f
-    private val screenExtra = 400
     private val baseController: AnimationController
 
     init {
@@ -44,21 +42,29 @@ class StarshipGame: GameFramework{
                         renderer = LayeredRenderer(),
                         world = StarShipWorld(CollisionEngine()),
                         asteroidSpawner = AsteroidSpawner(bounds),
+                        powerUpSpawner = RandomPowerUpSpawner(
+                                listOf(
+                                        DoubleShotSpawner(),
+                                        SpreadSpawner(),
+                                        DoubleDamageSpawner()
+                                )
+                        ),
                         shipPainter = ShipPainter(),
                         asteroidSpawnPainter = BaseSpawnPainter(AsteroidPainter()),
                         bulletSpawnPainter = BaseSpawnPainter(BulletPainter()),
+                        powerUpSpawnPainter = BaseSpawnPainter(PowerUpPainter()),
                         bounds = bounds),
-                hudController = StarShipHUDController(bounds),
+                hudController = StarShipHUDController(bounds, screenBounds),
                 shipSpawnController = ConfigurableShipSpawnController(
                         spawnLocations = defaultGameplayConfig.shipSpawnLocations,
-                        shipSpawner = ShipSpawner(bounds),
+                        shipSpawner = SmallShipSpawner(bounds),
                         configuration = defaultControlConfig.shipSpawn,
                         shipConfigurations = defaultControlConfig.shipControls
                 )
             ).apply { register(handler) }
 
             val pauseScreen = PauseScreen(
-                    bounds = bounds,
+                    bounds = screenBounds,
                     gameScreen = gameController,
                     selectConfiguration = defaultControlConfig.selectControl,
                     selectKeyName = defaultHUDConfig.selectKeyName,
@@ -72,7 +78,7 @@ class StarshipGame: GameFramework{
                 handler = handler,
                 configuration = defaultControlConfig.baseControl,
                 initialScreen = StartScreen(
-                        bounds = bounds,
+                        bounds = screenBounds,
                         selectConfiguration = defaultControlConfig.selectControl,
                         genGamePausePair = genGamePausePair,
                         selectKeyName = defaultHUDConfig.selectKeyName
@@ -82,17 +88,11 @@ class StarshipGame: GameFramework{
 
     override fun setup(windowsSettings: WindowSettings, imageLoader: ImageLoader) {
         windowsSettings
-                .setSize(bounds.x + screenExtra, bounds.y + screenExtra)
+                .setSize(screenBounds.x, screenBounds.y)
                 .setFrameRate(120)
     }
 
     override fun draw(graphics: PGraphics, timeSinceLastDraw: Float, keySet: MutableSet<Int>) {
-        graphics.rectMode(PGraphics.CORNER)
-        graphics.translate(screenExtra / 2f, screenExtra / 2f)
-        graphics.noFill()
-        graphics.stroke(255)
-        graphics.strokeWeight(3f)
-        graphics.rect(0f, 0f, bounds.x.toFloat(), bounds.y.toFloat())
         val plane = PGraphicsPlane(graphics)
         adapter.notifyHandler()
         lag += timeToMS(timeSinceLastDraw)

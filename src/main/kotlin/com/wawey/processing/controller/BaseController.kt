@@ -1,6 +1,6 @@
 package com.wawey.processing.controller
 
-import com.wawey.processing.Debounce
+import com.wawey.processing.Cooldown
 import com.wawey.processing.controller.event.KeyEventHandler
 import com.wawey.processing.controller.event.KeyEventObserver
 import com.wawey.processing.view.Plane
@@ -13,7 +13,7 @@ import java.util.*
  */
 class BaseController(private val handler: KeyEventHandler, initialScreen: ScreenController, configuration: BaseControllerConfiguration): GeneralController, ControllerCreationObserver, AnimationController {
     private val controllers: Stack<ScreenController> = Stack()
-    private val debounce = Debounce(200)
+    private val debounce = Cooldown(200)
 
     init {
         notifyNewController(initialScreen)

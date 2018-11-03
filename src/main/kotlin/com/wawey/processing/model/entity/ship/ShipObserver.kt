@@ -1,6 +1,6 @@
 package com.wawey.processing.model.entity.ship
 
-import com.wawey.processing.model.SpawnObserver
+import com.wawey.processing.model.spawner.SpawnObserver
 import com.wawey.processing.model.entity.Observable
 import com.wawey.processing.model.entity.bullet.Bullet
 

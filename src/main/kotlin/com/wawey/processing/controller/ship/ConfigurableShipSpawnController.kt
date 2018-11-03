@@ -1,12 +1,12 @@
 package com.wawey.processing.controller.ship
 
-import com.wawey.processing.Debounce
+import com.wawey.processing.Cooldown
 import com.wawey.processing.controller.ShipControllerConfiguration
 import com.wawey.processing.controller.ShipSpawnControllerConfiguration
 import com.wawey.processing.controller.event.KeyEventHandler
 import com.wawey.processing.controller.event.KeyEventObserver
-import com.wawey.processing.model.Spawner
 import com.wawey.processing.model.entity.ship.Ship
+import com.wawey.processing.model.spawner.ShipSpawner
 import com.wawey.processing.model.vector2D.Vector2D
 
 /**
@@ -15,14 +15,14 @@ import com.wawey.processing.model.vector2D.Vector2D
  */
 class ConfigurableShipSpawnController(
         private val spawnLocations: List<Vector2D>,
-        private val shipSpawner: Spawner<Ship>,
+        private val shipSpawner: ShipSpawner,
         private val configuration: ShipSpawnControllerConfiguration,
         private val shipConfigurations: List<ShipControllerConfiguration>): ShipSpawnController {
 
     private var shipsBuffer: List<Ship> = emptyList()
     private var shipControllers: List<ShipController> = emptyList()
     private var handler: KeyEventHandler? = null
-    private val debounce = Debounce(200)
+    private val debounce = Cooldown(200)
     private var lastLocation = spawnLocations.shuffled().first()
 
     override fun getNew(): List<Ship> {

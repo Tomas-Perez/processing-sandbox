@@ -4,7 +4,7 @@ package com.wawey.processing
  *
  * @author Tomas Perez Molina
  */
-class Debounce(private val timeout: Int) {
+class Cooldown(private val timeout: Int) {
     private var lastCall = 0L
 
     operator fun <T> invoke(default: T, function: () -> T): T {

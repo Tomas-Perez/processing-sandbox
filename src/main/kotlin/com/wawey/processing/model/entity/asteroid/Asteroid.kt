@@ -14,6 +14,7 @@ interface Asteroid: GameEntity {
     override val state: AsteroidState
 
     override fun <R> accept(entityVisitor: EntityVisitor<R>): R = entityVisitor.visit(this)
+    fun hit(entity: GameEntity)
 }
 
 data class AsteroidState(

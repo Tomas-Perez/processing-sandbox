@@ -1,6 +1,5 @@
 package com.wawey.processing.model.entity.bullet
 
-import com.wawey.processing.model.entity.EntityVisitor
 import com.wawey.processing.model.entity.GameEntity
 
 /**

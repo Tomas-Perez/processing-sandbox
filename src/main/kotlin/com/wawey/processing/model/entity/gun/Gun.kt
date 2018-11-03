@@ -1,6 +1,5 @@
 package com.wawey.processing.model.entity.gun
 
-import com.wawey.processing.Debounce
 import com.wawey.processing.model.Bounds
 import com.wawey.processing.model.entity.bullet.Bullet
 import com.wawey.processing.model.entity.bullet.LaserBullet
@@ -21,7 +20,7 @@ class Laser(private val bounds: Bounds): Gun {
     private val speed = -10f
 
     override fun shoot(origin: Vector2D, heading: Float, boost: Float): List<Bullet> =
-            listOf(LaserBullet(origin, heading, min(speed + boost, speed), bounds))
+            listOf(LaserBullet(5, origin, heading, min(speed + boost, speed), bounds))
 }
 
 class Spread(private val gun: Gun): Gun {
@@ -48,6 +47,16 @@ class DoubleShot(private val gun: Gun): Gun {
                 shots.map { it.copy(position = it.state.position.add(positionOffset)) },
                 shots.map { it.copy(position = it.state.position.substract(positionOffset)) }
         ).flatten()
+    }
+
+    override fun removeAttachment(): Gun = gun
+}
+
+class DoubleDamage(private val gun: Gun): Gun {
+
+    override fun shoot(origin: Vector2D, heading: Float, boost: Float): List<Bullet> {
+        val shots = gun.shoot(origin, heading, boost)
+        return shots.map { it.copy(size = it.size * 2) }
     }
 
     override fun removeAttachment(): Gun = gun

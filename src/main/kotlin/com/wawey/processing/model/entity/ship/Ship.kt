@@ -2,6 +2,7 @@ package com.wawey.processing.model.entity.ship
 
 import com.wawey.processing.model.entity.*
 import com.wawey.processing.model.entity.Observable
+import com.wawey.processing.model.entity.gun.Gun
 import com.wawey.processing.model.vector2D.Vector2Adapter
 import com.wawey.processing.model.vector2D.Vector2D
 import java.util.*
@@ -13,6 +14,7 @@ import java.util.*
 interface Ship: GameEntity, ControllableShip, Observable<ShipObserver> {
     val id: UUID
     override val state: ShipState
+    var gun: Gun
 
     override fun <R> accept(entityVisitor: EntityVisitor<R>): R = entityVisitor.visit(this)
 }

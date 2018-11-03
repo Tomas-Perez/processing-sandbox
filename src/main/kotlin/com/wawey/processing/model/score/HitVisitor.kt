@@ -10,12 +10,22 @@ import com.wawey.processing.model.entity.ship.Ship
  *
  * @author Tomas Perez Molina
  */
-class PointVisitor: EntityVisitor<Int> {
-    override fun visit(ship: Ship): Int = 10
+class HitVisitor: EntityVisitor<Int> {
+    override fun visit(ship: Ship): Int = 20
+
+    override fun visit(asteroid: Asteroid): Int = 10
+
+    override fun visit(bullet: Bullet): Int = 0
+
+    override fun visit(powerUp: PowerUp): Int = 0
+}
+
+class DestroyVisitor: EntityVisitor<Int> {
+    override fun visit(ship: Ship): Int = 200
 
     override fun visit(asteroid: Asteroid): Int = 50
 
     override fun visit(bullet: Bullet): Int = 0
 
-    override fun visit(powerUp: PowerUp): Int = -10
+    override fun visit(powerUp: PowerUp): Int = 0
 }

@@ -1,6 +1,6 @@
 package com.wawey.processing.model.entity.ship
 
-import com.wawey.processing.Debounce
+import com.wawey.processing.Cooldown
 import com.wawey.processing.model.Bounds
 import com.wawey.processing.model.entity.gun.Gun
 import com.wawey.processing.model.vector2D.Vector2Adapter
@@ -12,7 +12,7 @@ import java.util.*
  *
  * @author Tomas Perez Molina
  */
-class SmallShip(override val id: UUID, position: Vector2D, private val bounds: Bounds, var gun: Gun): Ship {
+class SmallShip(override val id: UUID, position: Vector2D, private val bounds: Bounds, override var gun: Gun): Ship {
 
     private val observers: MutableList<ShipObserver> = mutableListOf()
 
@@ -20,7 +20,7 @@ class SmallShip(override val id: UUID, position: Vector2D, private val bounds: B
     override val collider = ShipCollider(this)
     private var acceleration = 0f
     private var rotation = 0f
-    private val debounce = Debounce(500)
+    private val debounce = Cooldown(500)
     private val invincibleTime = 60
     private var invincibilityCounter = 0
 
@@ -71,21 +71,22 @@ class SmallShip(override val id: UUID, position: Vector2D, private val bounds: B
             adjustedY = bounds.y.toFloat()
         }
 
-            position = Vector2Adapter.vector(adjustedX, adjustedY)
-        }
+        position = Vector2Adapter.vector(adjustedX, adjustedY)
+    }
 
-        override fun hit(damage: Int): Boolean = with(state){
-            if(!invincible) {
-                hp -= damage
-                observers.forEach { it.notifyHit(damage) }
-                if (hp <= 0) {
-                    destroyed = true
-                    observers.forEach { it.notifyDestroy() }
-                }
+    override fun hit(damage: Int): Boolean = with(state) {
+        if(!invincible) {
+            gun = gun.removeAttachment()
+            hp -= damage
+            observers.forEach { it.notifyHit(damage) }
+            if (hp <= 0) {
+                destroyed = true
+                observers.forEach { it.notifyDestroy() }
+            }
             invincible = true
-            return@with true
+            true
         }
-        return@with false
+        else false
     }
 
     override fun applyAcceleration(a: Float) {

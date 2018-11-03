@@ -13,6 +13,11 @@ import kotlin.random.Random
 
 fun IntRange.random() = Random.nextInt(start, endInclusive)
 
+fun IntRange.mapTo(outputRange: IntRange): (Int) -> Int {
+    val slope: Float = (outputRange.endInclusive.toFloat() - outputRange.start.toFloat()) / (endInclusive.toFloat() - start.toFloat())
+    return { input -> (outputRange.start + slope * (input - start)).toInt() }
+}
+
 fun Shape.getPoints(): List<Vector2D> {
     fun vectorFromArray(array: DoubleArray): Vector2D =
             Vector2Adapter.vector(array[0].toFloat(), array[1].toFloat())

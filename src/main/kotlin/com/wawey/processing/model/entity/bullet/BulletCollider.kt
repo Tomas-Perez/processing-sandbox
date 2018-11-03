@@ -4,8 +4,6 @@ import com.wawey.processing.model.entity.Collider
 import com.wawey.processing.model.entity.asteroid.Asteroid
 import com.wawey.processing.model.entity.powerup.PowerUp
 import com.wawey.processing.model.entity.ship.Ship
-import java.awt.Shape
-import java.awt.geom.AffineTransform
 
 /**
  *

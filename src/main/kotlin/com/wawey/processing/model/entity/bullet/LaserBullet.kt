@@ -10,9 +10,9 @@ import java.awt.Rectangle
  *
  * @author Tomas Perez Molina
  */
-class LaserBullet(position: Vector2D, heading: Float, speed: Float, private val bounds: Bounds): Bullet {
+class LaserBullet(override val size: Int, position: Vector2D, heading: Float, speed: Float, private val bounds: Bounds): Bullet {
 
-    override val shape = Rectangle(0, 0, 3, 3)
+    override val shape = Rectangle(0, 0, size, size)
     override val collider = BulletCollider(this)
     override val state: BulletState = BulletState(position = position, heading = heading, speed = speed)
 
@@ -32,8 +32,11 @@ class LaserBullet(position: Vector2D, heading: Float, speed: Float, private val 
     override fun hit(damage: Int) = false
 
     override fun hit(entity: GameEntity) {
-        val hit = entity.hit(50)
-        if (hit) observers.forEach { it.notifyHit(entity) }
+        val hit = entity.hit(size * 5)
+        if (hit) {
+            if (entity.state.destroyed) observers.forEach { it.notifyDestroy(entity) }
+            else observers.forEach { it.notifyHit(entity) }
+        }
     }
 
     override fun addObserver(o: BulletObserver) {
@@ -44,8 +47,9 @@ class LaserBullet(position: Vector2D, heading: Float, speed: Float, private val 
         observers.remove(o)
     }
 
-    override fun copy(position: Vector2D?, heading: Float?, speed: Float?): Bullet =
+    override fun copy(size: Int?, position: Vector2D?, heading: Float?, speed: Float?): Bullet =
         LaserBullet(
+            size = size?: this.size,
             position = position?: this.state.position,
             heading = heading?: this.state.heading,
             speed = speed?: this.state.speed,

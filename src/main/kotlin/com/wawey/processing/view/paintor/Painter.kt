@@ -1,13 +1,12 @@
 package com.wawey.processing.view.paintor
 
-import com.wawey.processing.model.SpawnObserver
+import com.wawey.processing.model.spawner.SpawnObserver
 import com.wawey.processing.model.entity.asteroid.Asteroid
 import com.wawey.processing.model.entity.bullet.Bullet
+import com.wawey.processing.model.entity.powerup.*
 import com.wawey.processing.model.entity.ship.Ship
 import com.wawey.processing.view.Drawable
-import com.wawey.processing.view.model.AsteroidView
-import com.wawey.processing.view.model.BulletView
-import com.wawey.processing.view.model.ShipView
+import com.wawey.processing.view.model.*
 import java.awt.Color
 
 /**
@@ -30,7 +29,25 @@ class AsteroidPainter: Painter<Asteroid> {
     override fun draw(t: Asteroid, color: Color): Drawable = AsteroidView(t.shape, t.state, color)
 }
 
-interface SpawnPainter<T> : SpawnObserver<T>{
+class PowerUpPainter: Painter<PowerUp>, PowerUpVisitor<Drawable> {
+    private var currentColor: Color = Color.BLACK
+
+    override fun draw(t: PowerUp, color: Color): Drawable {
+        currentColor = color
+        return t.accept(this)
+    }
+
+    override fun visit(doubleShot: DoubleShotPowerUp): Drawable =
+            DoubleShotView(doubleShot.shape, doubleShot.state, currentColor)
+
+    override fun visit(spread: SpreadPowerUp): Drawable =
+            SpreadView(spread.shape, spread.state, currentColor)
+
+    override fun visit(doubleDamage: DoubleDamagePowerUp): Drawable =
+            DoubleDamageView(doubleDamage.shape, doubleDamage.state, currentColor)
+}
+
+interface SpawnPainter<T> : SpawnObserver<T> {
     fun getNew(): List<Drawable>
 }
 

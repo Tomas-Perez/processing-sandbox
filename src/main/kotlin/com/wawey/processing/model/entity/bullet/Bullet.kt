@@ -13,12 +13,14 @@ import com.wawey.processing.model.vector2D.Vector2D
  */
 interface Bullet: GameEntity, Observable<BulletObserver> {
     override val state: BulletState
+    val size: Int
 
     override fun <R> accept(entityVisitor: EntityVisitor<R>): R = entityVisitor.visit(this)
 
     fun hit(entity: GameEntity)
 
-    fun copy(position: Vector2D? = null,
+    fun copy(size: Int? = null,
+             position: Vector2D? = null,
              heading: Float? = null,
              speed: Float? = null): Bullet
 

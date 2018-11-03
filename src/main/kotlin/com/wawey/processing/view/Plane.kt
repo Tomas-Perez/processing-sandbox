@@ -2,6 +2,7 @@ package com.wawey.processing.view
 
 import com.wawey.processing.model.vector2D.Vector2D
 import edu.austral.starship.base.vector.Vector2
+import processing.core.PImage
 import java.awt.Point
 
 /**

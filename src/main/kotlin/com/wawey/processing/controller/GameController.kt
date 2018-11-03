@@ -4,14 +4,15 @@ import com.wawey.processing.controller.event.KeyEventHandler
 import com.wawey.processing.controller.gameplay.GameplayController
 import com.wawey.processing.controller.hud.HUDController
 import com.wawey.processing.controller.ship.ShipSpawnController
-import com.wawey.processing.model.SpawnObserver
+import com.wawey.processing.model.spawner.SpawnObserver
 import com.wawey.processing.model.entity.bullet.Bullet
 import com.wawey.processing.model.entity.ship.Ship
 import com.wawey.processing.model.entity.ship.ShipObserver
 import com.wawey.processing.model.entity.ship.ShootingObserver
+import com.wawey.processing.model.score.DestroyVisitor
 import com.wawey.processing.model.score.Player
 import com.wawey.processing.model.score.PointScout
-import com.wawey.processing.model.score.PointVisitor
+import com.wawey.processing.model.score.HitVisitor
 import com.wawey.processing.view.Plane
 import java.awt.Color
 import java.util.*
@@ -26,7 +27,8 @@ class GameController(private val gameplayController: GameplayController,
                      private val shipColors: List<Color>): ScreenController {
 
     private val playerShips = mutableMapOf<UUID, Player>()
-    private val pointVisitor = PointVisitor()
+    private val pointVisitor = HitVisitor()
+    private val destroyVisitor = DestroyVisitor()
     private var respawnedShips = emptyList<Ship>()
 
     override fun render(plane: Plane) {
@@ -65,7 +67,7 @@ class GameController(private val gameplayController: GameplayController,
         val shootingObserver = ShootingObserver().apply {
             addObserver(object : SpawnObserver<Bullet> {
                 override fun notifySpawn(t: Bullet) {
-                    t.addObserver(PointScout(player, pointVisitor))
+                    t.addObserver(PointScout(player, pointVisitor, destroyVisitor))
                 }
             })
         }

@@ -12,8 +12,8 @@ data class PaintConfiguration(
 
 private val shipColors = listOf(
         Color.RED,
-        Color.GREEN,
         Color.BLUE,
+        Color.GREEN,
         Color.ORANGE,
         Color.YELLOW,
         Color.CYAN
