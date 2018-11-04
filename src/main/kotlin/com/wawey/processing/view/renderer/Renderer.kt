@@ -9,6 +9,5 @@ import com.wawey.processing.view.Plane
  */
 interface Renderer {
     fun add(drawable: Drawable)
-    fun add(drawable: Drawable, z: Int)
     fun render(plane: Plane)
 }

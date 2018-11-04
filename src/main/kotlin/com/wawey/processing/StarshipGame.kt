@@ -13,7 +13,7 @@ import com.wawey.processing.model.StarShipWorld
 import com.wawey.processing.model.spawner.*
 import com.wawey.processing.view.PGraphicsPlane
 import com.wawey.processing.view.paintor.*
-import com.wawey.processing.view.renderer.LayeredRenderer
+import com.wawey.processing.view.renderer.BasicRenderer
 import edu.austral.starship.base.Main
 import edu.austral.starship.base.collision.CollisionEngine
 import edu.austral.starship.base.framework.GameFramework
@@ -42,7 +42,7 @@ class StarshipGame: GameFramework{
                 gameOverScreenGen = {p -> GameOverScreen(screenBounds, defaultHUDConfig.backKeyName, p)},
                 shipColors = defaultPaintConfig.shipColors,
                 gameplayController = StarShipGameplayController(
-                        renderer = LayeredRenderer(),
+                        renderer = BasicRenderer(),
                         world = StarShipWorld(CollisionEngine()),
                         asteroidSpawner = AsteroidSpawner(bounds),
                         powerUpSpawner = RandomPowerUpSpawner(
