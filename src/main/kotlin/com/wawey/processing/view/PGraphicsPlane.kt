@@ -9,11 +9,6 @@ import processing.core.PGraphics
  */
 class PGraphicsPlane(private val graphics: PGraphics): Plane {
 
-    override val width: Int
-        get() = graphics.width
-    override val height: Int
-        get() = graphics.height
-
     override fun ellipse(radiusA: Int, radiusB: Int, position: Vector2D, angle: Float) {
         withRototraslation(position, angle) {
             graphics.ellipse(

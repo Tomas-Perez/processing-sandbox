@@ -28,9 +28,9 @@ class BaseController(private val handler: KeyEventHandler, initialScreen: Screen
         if(controllers.size > 1) {
             val oldController = controllers.pop()
             oldController.deregister(handler)
-            oldController.removeObserver(this)
+            oldController.removeRouter()
             val newController = controllers.peek()
-            newController.addObserver(this)
+            newController.addRouter(this)
             newController.register(handler)
         }
     }
@@ -38,10 +38,10 @@ class BaseController(private val handler: KeyEventHandler, initialScreen: Screen
     override fun newController(s: ScreenController) {
         if(controllers.size >= 1) {
             val current = controllers.peek()
-            current.removeObserver(this)
+            current.removeRouter()
             current.deregister(handler)
         }
-        s.addObserver(this)
+        s.addRouter(this)
         s.register(handler)
         controllers.push(s)
     }

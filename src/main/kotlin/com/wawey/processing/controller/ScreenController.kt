@@ -7,4 +7,7 @@ import com.wawey.processing.model.entity.Observable
  *
  * @author Tomas Perez Molina
  */
-interface ScreenController: AnimationController, KeyEventController, Observable<ControllerRouter>
+interface ScreenController: AnimationController, KeyEventController {
+    fun addRouter(r: ControllerRouter)
+    fun removeRouter()
+}

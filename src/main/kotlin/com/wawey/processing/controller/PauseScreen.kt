@@ -16,7 +16,7 @@ class PauseScreen(private val bounds: Bounds,
                   private val selectConfiguration: SelectConfiguration,
                   private val selectKeyName: String,
                   private val backKeyName: String): ScreenController {
-    private var routers: List<ControllerRouter> = emptyList()
+    var router: ControllerRouter? = null
 
     override fun render(plane: Plane) {
         plane.setDrawColors(DrawColors())
@@ -43,20 +43,23 @@ class PauseScreen(private val bounds: Bounds,
     override fun update() = Unit
 
     override fun register(handler: KeyEventHandler) {
-        handler.addObserver(selectConfiguration.selectKey, object : KeyEventObserver {
-            override fun notifyKeyPressed() = routers.forEach { it.newController(gameScreen) }
-        })
+        router?.also {
+            handler.addObserver(selectConfiguration.selectKey, object : KeyEventObserver {
+                override fun notifyKeyPressed() = it.newController(gameScreen)
+            })
+        }
+
     }
 
     override fun deregister(handler: KeyEventHandler) {
         handler.removeObserver(selectConfiguration.selectKey)
     }
 
-    override fun addObserver(o: ControllerRouter) {
-        routers = routers.plus(o)
+    override fun addRouter(r: ControllerRouter) {
+        router = r
     }
 
-    override fun removeObserver(o: ControllerRouter) {
-        routers = routers.minus(o)
+    override fun removeRouter() {
+        router = null
     }
 }

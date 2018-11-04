@@ -9,10 +9,7 @@ import com.wawey.processing.model.entity.bullet.Bullet
 import com.wawey.processing.model.entity.ship.Ship
 import com.wawey.processing.model.entity.ship.ShipObserver
 import com.wawey.processing.model.entity.ship.ShootingObserver
-import com.wawey.processing.model.score.DestroyVisitor
-import com.wawey.processing.model.score.Player
-import com.wawey.processing.model.score.PointScout
-import com.wawey.processing.model.score.HitVisitor
+import com.wawey.processing.model.score.*
 import com.wawey.processing.view.Plane
 import java.awt.Color
 import java.util.*
@@ -27,9 +24,9 @@ class GameController(private val gameplayController: GameplayController,
                      private val gameOverScreenGen: (Player) -> GameOverScreen,
                      private val shipColors: List<Color>): ScreenController {
 
-    private var routers: List<ControllerRouter> = emptyList()
+    var router: ControllerRouter? = null
     private val playerShips = mutableMapOf<UUID, Player>()
-    private val pointVisitor = HitVisitor()
+    private val hitVisitor = HitVisitor()
     private val destroyVisitor = DestroyVisitor()
     private var respawnedShips = emptyList<Ship>()
     private var gameStarted = false
@@ -41,7 +38,7 @@ class GameController(private val gameplayController: GameplayController,
 
     override fun update() {
         if (playerShips.filter { it.value.alive }.isEmpty() && gameStarted) {
-            routers.forEach {
+            router?.also {
                 it.goToStart()
                 val highScorePlayer = playerShips.values.sortedBy { p -> -p.points }.first()
                 it.newController(gameOverScreenGen(highScorePlayer))
@@ -49,7 +46,7 @@ class GameController(private val gameplayController: GameplayController,
         }
         shipSpawnController.getNew().forEach {
             gameStarted = true
-            val newPlayer = Player(playerShips.size, "Player ${playerShips.size + 1}")
+            val newPlayer = StarShipPlayer(playerShips.size, "Player ${playerShips.size + 1}")
             registerShip(newPlayer, it)
             gameplayController.addShip(it, shipColors[playerShips.size])
             hudController.addPlayer(newPlayer)
@@ -78,7 +75,7 @@ class GameController(private val gameplayController: GameplayController,
         val shootingObserver = ShootingObserver().apply {
             addObserver(object : SpawnObserver<Bullet> {
                 override fun notifySpawn(t: Bullet) {
-                    t.addObserver(PointScout(player, pointVisitor, destroyVisitor))
+                    t.addObserver(PointScout(player, hitVisitor, destroyVisitor))
                 }
             })
         }
@@ -99,11 +96,11 @@ class GameController(private val gameplayController: GameplayController,
         shipSpawnController.deregister(handler)
     }
 
-    override fun addObserver(o: ControllerRouter) {
-        routers = routers.plus(o)
+    override fun addRouter(r: ControllerRouter) {
+        router = r
     }
 
-    override fun removeObserver(o: ControllerRouter) {
-        routers = routers.minus(o)
+    override fun removeRouter() {
+        router = null
     }
 }

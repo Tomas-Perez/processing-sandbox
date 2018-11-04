@@ -1,7 +1,6 @@
 package com.wawey.processing.controller
 
 import com.wawey.processing.controller.event.KeyEventHandler
-import com.wawey.processing.controller.event.KeyEventObserver
 import com.wawey.processing.model.Bounds
 import com.wawey.processing.model.score.Player
 import com.wawey.processing.model.vector2D.Vector2Adapter
@@ -15,7 +14,6 @@ import com.wawey.processing.view.Plane
 class GameOverScreen(private val bounds: Bounds,
                      private val backKeyName: String,
                      private val highScorePlayer: Player): ScreenController {
-    private var routers: List<ControllerRouter> = emptyList()
 
     override fun render(plane: Plane) {
         plane.setDrawColors(DrawColors())
@@ -45,11 +43,7 @@ class GameOverScreen(private val bounds: Bounds,
 
     override fun deregister(handler: KeyEventHandler) = Unit
 
-    override fun addObserver(o: ControllerRouter) {
-        routers = routers.plus(o)
-    }
+    override fun addRouter(r: ControllerRouter) = Unit
 
-    override fun removeObserver(o: ControllerRouter) {
-        routers = routers.minus(o)
-    }
+    override fun removeRouter() = Unit
 }
