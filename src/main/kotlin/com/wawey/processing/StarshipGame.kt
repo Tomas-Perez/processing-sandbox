@@ -10,12 +10,12 @@ import com.wawey.processing.controller.hud.StarShipHUDController
 import com.wawey.processing.controller.ship.ConfigurableShipSpawnController
 import com.wawey.processing.model.Bounds
 import com.wawey.processing.model.StarShipWorld
+import com.wawey.processing.model.collision.CollisionEngineAdapter
 import com.wawey.processing.model.spawner.*
 import com.wawey.processing.view.PGraphicsPlane
 import com.wawey.processing.view.paintor.*
 import com.wawey.processing.view.renderer.BasicRenderer
 import edu.austral.starship.base.Main
-import edu.austral.starship.base.collision.CollisionEngine
 import edu.austral.starship.base.framework.GameFramework
 import edu.austral.starship.base.framework.ImageLoader
 import edu.austral.starship.base.framework.WindowSettings
@@ -43,7 +43,7 @@ class StarshipGame: GameFramework{
                 shipColors = defaultPaintConfig.shipColors,
                 gameplayController = StarShipGameplayController(
                         renderer = BasicRenderer(),
-                        world = StarShipWorld(CollisionEngine()),
+                        world = StarShipWorld(CollisionEngineAdapter()),
                         asteroidSpawner = AsteroidSpawner(bounds),
                         powerUpSpawner = RandomPowerUpSpawner(
                                 listOf(

@@ -1,8 +1,8 @@
 package com.wawey.processing.model
 
+import com.wawey.processing.model.collision.CollisionEngine
 import com.wawey.processing.model.entity.Collider
 import com.wawey.processing.model.entity.GameEntity
-import edu.austral.starship.base.collision.CollisionEngine
 
 /**
  *
