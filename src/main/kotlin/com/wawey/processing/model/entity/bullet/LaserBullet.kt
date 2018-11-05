@@ -10,11 +10,12 @@ import java.awt.Rectangle
  *
  * @author Tomas Perez Molina
  */
-class LaserBullet(override val size: Int, position: Vector2D, heading: Float, speed: Float, private val bounds: Bounds): Bullet {
+class LaserBullet(override val size: Int, private val position: Vector2D, heading: Float, speed: Float, private val bounds: Bounds): Bullet {
 
-    override val shape = Rectangle(0, 0, size, size)
+    override val shape = Rectangle(-size/2, -size/2, size, size)
     override val collider = BulletCollider(this)
-    override val state: BulletState = BulletState(position = position, heading = heading, speed = speed)
+
+    override val state: BulletState = BulletState(position = position.substract(Vector2Adapter.fromModule(size / 1f, heading)), heading = heading, speed = speed)
 
     private val observers = mutableListOf<BulletObserver>()
 
@@ -50,7 +51,7 @@ class LaserBullet(override val size: Int, position: Vector2D, heading: Float, sp
     override fun copy(size: Int?, position: Vector2D?, heading: Float?, speed: Float?): Bullet =
         LaserBullet(
             size = size?: this.size,
-            position = position?: this.state.position,
+            position = position?: this.position,
             heading = heading?: this.state.heading,
             speed = speed?: this.state.speed,
             bounds = bounds)

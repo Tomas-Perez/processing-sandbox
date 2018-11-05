@@ -46,7 +46,7 @@ class SmallShip(override val id: UUID, position: Vector2D, private val bounds: B
         position = position.add(Vector2Adapter.fromModule(speed, heading))
         speed *= 0.85f
         if (shooting) {
-            val offset = Vector2Adapter.fromModule(-50f, heading)
+            val offset = Vector2Adapter.fromModule(-25f, heading)
             val bullets = gun.shoot(position.add(offset), heading, speed)
             observers.forEach { it.notifyShoot(bullets) }
             shooting = false
