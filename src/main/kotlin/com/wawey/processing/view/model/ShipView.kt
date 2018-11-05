@@ -29,7 +29,7 @@ class ShipView(shape: Shape, private val state: ShipState, private val color: Co
             }
         }
         if (draw) {
-            plane.setDrawColors(DrawColors(border = color, borderWidth = 5))
+            plane.setDrawColors(DrawColors(fill = color, borderWidth = 0))
             plane.polygon(points, state.position, state.heading)
         }
     }
